@@ -1,0 +1,87 @@
+<div id="navegacao" class="container">
+    <div class="row">
+      <div class="col  d-flex">
+        <a href="{% url 'os_ti:os_painel' %}" class="me-3">
+          <div class="d-flex flex-column align-items-center">
+            <div id="os_painel" class="s-nav rounded-circle"></div>
+            <p class="text-dark">Painel</p>
+          </div>
+        </a>  
+        <a href="{% url 'os_ti:os_index' %}" class="me-3">
+          <div class="d-flex flex-column align-items-center">
+            <div id="os_index" class="s-nav rounded-circle"></div>
+            <p class="text-dark">Serviços</p>
+          </div>
+        </a>  
+        <a href="{% url 'os_ti:add_os' %}" class="me-3">
+          <div class="d-flex flex-column align-items-center">
+            <div id="os_solicitar" class="s-nav rounded-circle "></div>
+            <p class="text-dark text-center">Solicitar</p>
+          </div>
+        </a>
+        <a href="{% url 'ti_almoxarifado:index' %}" class="me-3">
+          <div class="d-flex flex-column align-items-center">
+            <div id="os_almoxarifado" class="s-nav rounded-circle"></div>
+            <p class="text-dark">Almoxarifado</p>
+          </div>
+        </a>              
+        <a href="{% url 'os_ti:kpi' %}" class="me-3">
+          <div class="d-flex flex-column align-items-center">
+            <div id="os_kpi" class="s-nav rounded-circle "></div>
+            <p class="text-dark text-center">Indicadores</p>
+          </div>
+        </a>                     
+        {% if request.user.is_staff %}
+        <a href="{% url 'os_ti:funcionarios' %}" class="me-3">
+          <div class="d-flex flex-column align-items-center">
+            <div id="os_funcionarios" class="s-nav rounded-circle"></div>
+            <p class="text-dark">Funcionarios</p>
+          </div>
+        </a> 
+        <!-- <a href="{% url 'administrativo' %}" class="me-3">
+          <div class="d-flex flex-column align-items-center">
+            <div id="admin" class="s-nav rounded-circle destaque"></div>
+            <p class="text-dark">DJ-Admin</p>
+          </div>
+        </a> -->
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  <style>
+    #os_inicio{      
+      background-color: white !important;
+      background-image: url(/static/images/icones/os_inicio.png);
+      background-size: contain;
+    }
+    #os_solicitar{
+      background-color: white !important;
+      background-image: url(/static/images/icones/os_solicitar.png);
+      background-size: contain;
+    }
+    #os_kpi{
+      background-color: white !important;
+      background-image: url(/static/images/icones/os_kpi.png);
+      background-size: contain;
+    }
+    #os_almoxarifado{
+      background-color: white !important;
+      background-image: url(/static/images/icones/os_almoxarifado.png);
+      background-size: contain;
+    }
+    #os_funcionarios{
+      background-color: white !important;
+      background-image: url(/static/images/icones/os_funcionarios.png);
+      background-size: contain;
+    }
+    #os_painel{
+      background-color: white !important;
+      background-image: url(/static/images/icones/os_painel.png);
+      background-size: contain;
+    }
+    #admin{
+      background-color: white !important;
+      background-image: url(/static/images/icones/bemestaranimal_admin.png);
+      background-size: contain;
+    }
+  </style>

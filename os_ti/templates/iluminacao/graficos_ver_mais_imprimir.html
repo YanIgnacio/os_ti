@@ -1,0 +1,72 @@
+<div class="row">
+  <div class="col d-flex bg-info"> 
+    <div class="w-100" id="chart_div"></div>                                                                       
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  document.getElementById('os_painel').classList.add('s-nav-active');  
+</script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+
+  // Load the Visualization API and the corechart package.
+  google.charts.load('current', {'packages':['corechart']});
+
+  // Set a callback to run when the Google Visualization API is loaded.
+  google.charts.setOnLoadCallback(drawChart);
+
+  // Callback that creates and populates a data table,
+  // instantiates the pie chart, passes in the data and
+  // draws it.
+  function drawChart() {
+
+    // Create the data table.
+    var data = google.visualization.arrayToDataTable([
+          ['{{y}}', '{{x}}', { role: 'annotation' }],
+          {% for item in dados %}
+          ['{{item.y}}', {{item.total}}, {{item.total}}],
+          {% endfor %}
+          ]);
+    // var data = new google.visualization.DataTable();
+    // data.addColumn('string', '{{y}}');
+    // data.addColumn('number', '{{x}}');
+    // data.addRows([
+    //   {% for item in dados %}
+    //   ['{{item.y}}', {{item.total}}],
+    //   {% endfor %}
+    // ]);
+
+    // Set chart options
+    var options = {
+      'title':'Pontos por bairro',      
+      'width':'100vw',
+      'height':'auto',
+      'hAxis': { 
+        'textStyle' : {
+            'fontSize': 15 // or the number you want
+        }        
+      },
+      'vAxis': { 
+        'textStyle' : {            
+            'fontSize': 10   // or the number you want
+        }        
+      },
+      'annotations': {
+        'textStyle': {
+          'fontSize': 9,
+          'bold': true,
+        }
+      }
+    };
+
+    // Instantiate and draw our chart, passing in some options.
+    var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
+    
+    chart.draw(data, options);
+  }
+  window.print();
+    setTimeout(function(){
+        window.close();
+    },2000);
+</script>

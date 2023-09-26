@@ -1,0 +1,123 @@
+{% extends 'template.html' %}
+{% load static%}
+{% block nav %}
+{% include 'nav_os.html' %}
+{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/index.css' %}">
+{% endblock %}
+{% block index %}fw-bold{% endblock %}
+{% block main %}
+<div id="banner" class="row mx-auto" style="border-radius: 30px;">
+    <div class="col d-flex flex-column px-5 py-4"> 
+      <div class="row">
+        <div class="col">
+          <h1 class="display-1 text-danger">
+            EM CONSTRUÇÃO
+          </h1>
+          <h4 class="text-danger fw-bold">Não levar as informações dessa página em consideração.</h4>
+        </div>
+      </div>       
+        <div class="row">
+          <div class="col d-flex">
+            <h1 class="display-3 pb-2">
+              Painel de Serviços   
+          </h1>
+          <h1 class="ms-auto display-3">
+            2023
+          </h1>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <table>
+              <thead>
+                  <tr>
+                      <th class="pe-4">Ano</th>
+                      <th class="pe-4">Semana</th>
+                      <th class="pe-4">Total de OS</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  {% for item in total_os_semana_ano %}
+                      <tr>
+                          <td class="pe-4">{{ item.ano }}</td>
+                          <td class="pe-4">{{ item.semana }}</td>
+                          <td class="pe-4">{{ item.total_os }}</td>
+                      </tr>
+                  {% endfor %}
+              </tbody>
+          </table>
+      
+          <h1>Contagem de OS por Mês</h1>
+          <table>
+              <thead>
+                  <tr>
+                    <th class="pe-4">Ano</th>
+                    <th class="pe-4">Mês</th>
+                    <th class="pe-4">Total de OS</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  {% for item in total_os_mes %}
+                      <tr>
+                          <td class="pe-4">{{ item.ano }}</td>
+                          <td class="pe-4">{{ item.mes }}</td>
+                          <td class="pe-4">{{ item.total_os }}</td>
+                      </tr>
+                  {% endfor %}
+              </tbody>
+          </table>
+          </div>
+        </div>
+    </div>
+</div>
+{% if messages %}              
+<!-- MODAL -->
+<div class="modal fade" id="resposta" aria-hidden="true" aria-labelledby="respostaLabel" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        {% for message in messages %}
+        <div class="modal-header {% if message.tags %}{{message.tags}}{% endif %} border-0">
+          <h5 class="modal-title text-dark text-center" id="exampleModalToggleLabel"></h5>
+          <button type="button" onclick="myModal.hide();" class="btn-close"></button>
+        </div>
+        <div class="modal-body px-5 {% if message.tags %}{{message.tags}}{% endif %}">   
+           
+          <p class="px-4 py-3 text-center">
+            {{ message|escape }}
+          </p>
+          
+          
+        </div>
+        <div class="modal-footer {% if message.tags %}{{message.tags}}{% endif %} border-0">
+          
+        </div>
+        {% endfor %}
+      </div>
+
+    </div>
+  </div>   
+  <script>
+    document.getElementById('os_painel').classList.add('s-nav-active');  
+
+  </script>
+  <style>
+    .error{
+      background-color: rgb(238, 171, 171);
+      color: darkred;
+      font-weight: 600;
+    }
+    .success{
+      background-color: rgb(182, 238, 171);
+      color: rgb(0, 139, 19);
+      font-weight: 600
+    }
+    .warning{
+      background-color: rgb(238, 226, 171);
+      color: rgb(139, 107, 0);
+      font-weight: 600
+    }
+  </style>
+{% endif %} 
+{% endblock %}

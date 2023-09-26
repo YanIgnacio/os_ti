@@ -1,0 +1,294 @@
+{% extends 'template.html' %}
+{% load bootstrap5 %}
+{% load static %}
+{% load custom_filters %}
+{% block nav %}
+{% include 'nav_os.html' %}
+{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/almoxarifado.css' %}">
+{% endblock %}
+{% block os %}fw-bolder{% endblock %}
+{% block main %}
+<div class="row">
+  <div class="col d-flex py-5"> 
+        <div class="row w-100">
+            <!-- <div class="col-10 pb-4 m-auto bg-white">
+                 <div class="row py-3 px-4">
+                    <div class="col bg p-5">
+                        <h1 class="display-4 text-center">ORDEM DE SERVIÇO</h1>
+                    </div> -->
+                <!-- </div>               -->
+                <div class="row">
+                    <div class="col px-4">                                                                     
+                        <div class="px-2">
+                          <div class="row mb-2">
+                            <div class="col px-0 d-flex">
+                              <h4 class="pt-4">Detalhes da OS</h4>                              
+                              <div class="dropdown">
+                                <button class="mt-3 py-1 ms-3 btn dropdown-toggle {% if os.prioridade == '0'%} btn-success {% elif os.prioridade == '1' %} btn-warning {% elif os.prioridade == '2' %} btn-danger {% endif %}" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                  {{os.get_prioridade_display}}
+                                </button>
+                                <ul class="dropdown-menu" style="padding: 3px;" aria-labelledby="dropdownMenuButton1">
+                                  {% for prioridade in PRIORIDADES %}
+                                  {% if not os.prioridade == prioridade.0 %}
+                                  <li>
+                                    <a class="dropdown-item {% if prioridade.0 == '0'%} bg-success text-white {% elif prioridade.0 == '1' %} bg-warning   {% elif prioridade.0  == '2' %} bg-danger text-white {% endif %}" href="{% url 'iluminacao:change_prioridade_os' id=os.id opcao=prioridade.0 %}"> 
+                                      <i class="fa-solid fa-hand-point-right me-4"></i>{{prioridade.1}}
+                                    </a>
+                                  </li>
+                                  {% endif %}                                  
+                                  {% endfor %}                                
+                                </ul>
+                              </div>
+                            </div>
+                            <div class="col d-flex">                              
+                              {% if os.atendente %}
+                              <span class="ms-auto mt-3  mb-auto btn btn-secondary py-1">
+                              {{os.atendente.first_name}}
+                              </span>
+                              {% else %}
+                              <a href="{% url 'iluminacao:atender_os' os.id %}" class="ms-auto mt-3 mb-auto btn btn-secondary py-1">
+                                Atender chamado
+                              </a>
+                              {% endif %}
+                              <div class="dropdown">
+                                <button class="ms-2 mt-3 py-1 px-4 text-capitalize btn dropdown-toggle {% if os.status == '0'%} btn-info text-white {% elif os.status == '1' %} btn-warning {% elif os.status == '2' %} btn-danger{% elif os.status == 'f' %} btn-dark {% endif %} px-2 py-0" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                  {{os.get_status_display}}
+                                </button>
+                                <ul class="dropdown-menu" style="padding: 3px;" aria-labelledby="dropdownMenuButton1">
+                                  {% for status in STATUS %}
+                                  {% if not os.status == status.0 %}
+                                  <li>
+                                    <a class="dropdown-item {% if status.0 == '0'%} bg-info text-white {% elif status.0 == '1' %} bg-warning   {% elif status.0  == '2' %} bg-danger text-white {% elif status.0  == 'f' %} bg-dark text-white{% endif %}" href="{% url 'iluminacao:change_status_os' id=os.id opcao=status.0 %}">
+                                      <i class="fa-solid fa-hand-point-right me-4"></i>{{status.1}}
+                                    </a>
+                                  </li>
+                                  {% endif %}                                  
+                                  {% endfor %}
+                                </ul>
+                              </div> 
+                              <a href="{% url 'iluminacao:imprimir' os.id %}" target="_blank" class="btn btn-dark mt-3 mb-auto py-1 ms-2">
+                                <i class="fa-solid fa-print"></i>
+                              </a>                             
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col border p-3">
+                              <div class="w-100 d-flex">
+                                <b class="me-2">Protocolo:</b> {{os.numero}} 
+                                <span class="ms-auto">
+                                  <b class="me-2">Tipo:</b>{{os.tipo}}
+                                </span>
+                              </div>
+                              <div class="w-100 pt-3">
+                                <div class="row">
+                                  <div class="col">
+                                    <b>Motivo da OS</b>
+                                    <p>{{os.motivo_reclamacao}}</p>
+                                  </div>
+                                  <div class="col">
+                                    <b>Cadastrado por:</b>
+                                    <p>{{os.cadastrado_por.nome}} ({{os.cadastrado_por.email}})</p>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="w-100 py-2">
+                                <b>Endereço:</b>
+                                <p>{{os.logradouro}} {{os.bairro}}.</p>
+                                <p style="margin-top: 10px; line-height: 0;">Referência: {{os.referencia}}</p>
+                              </div>
+                              <div class="w-100 py-2">
+                                <div class="row">
+                                  <div class="col">
+                                    <b>Dt. de solicitação:</b>
+                                    <p>{{os.dt_solicitacao}}</p>
+                                  </div>
+                                  <div class="col">                                    
+                                    <b>Dt. da execução:</b>                                    
+                                    <p>{% if os.dt_execucao %}{{os.dt_execucao|mes_extenso}}{% endif %}</p>                                                                        
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="w-100 py-2">
+                                <div class="row">
+                                  <div class="col">
+                                    <b>Dt. de alteração:</b>
+                                    <p>{% if os.dt_alteracao %}{{os.dt_alteracao}}{% endif %}</p>
+                                  </div>
+                                  <div class="col">
+                                    
+                                    <b>Dt. de conclusão:</b>                                    
+                                    <p>{% if os.dt_conclusao %}{{os.dt_conclusao}}{% endif %}</p>                                    
+                                    
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-4">
+                              <div class="border border-bottom-0 py-3 px-4">
+                                <h4 class="my-0">Contribuinte</h4>
+                              </div>
+                              <div class="border py-4 px-4">
+                                <p class="d-flex"><b class="me-auto">Nome:</b>{{os.nome_do_contribuinte}}</p>
+                                <p class="d-flex"><b class="me-auto">Telefone:</b>{{os.telefone_do_contribuinte}}</p>                                
+                              </div>    
+                              <div class="border  py-4 px-4 mt-3">
+                                <p class="d-flex me-2"><b class="me-auto">Atribuir</b></p>                                
+                                <a class="btn btn-primary" href="{% url 'iluminacao:pontos_os' os.id %}">Qnt. Pontos e dt. execução</a>                              
+                                {% if os_ext.equipe %}                                
+                                <a href="{% url 'iluminacao:atribuir equipe' os.id %}" tabindex="0" class="popoverbutton btn btn-md btn-primary" role="button" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-trigger="hover focus" title="Equipe" data-bs-content="{% for e in os_ext.equipe.all %}{{e}}{% if not forloop.last %}{% if forloop.revcounter == 1 %} | {% else %} | {% endif %}{% endif %} {% endfor %}">Equipe</a>                                
+
+                                {% else %}
+                                <a class="btn btn-primary" href="{% url 'iluminacao:atribuir equipe' os.id %}">Equipe</a>
+                                {% endif %}
+                                
+                                <a class="btn btn-primary mt-2 {% if not os.status == 'f' %}disabled{% endif %}" href="{% url 'almoxarifado:alm_remover_material_do_estoque' os.id %}">Equipamentos utilizados</a>
+
+                              </div>                              
+                            </div>
+                          </div>                         
+                        </div>
+                        <div class="row mb-2">
+                          <div class="col">
+                            <h4 class="mt-4">LINHA DO TEMPO</h4>
+                          </div>
+                        </div>
+                        {% for mensagem in linha_tempo %}
+                        <div class="row mb-3">
+                          <div class="col px-4">
+                            <div class="row">
+                              <div class="col border p-3" {% if forloop.counter|divisibleby:2 %}{%else%}style="background-color: #0095ff0c;"{% endif %}>
+                                <div class="w-100 d-flex">
+                                  <b>{{mensagem.pessoa.nome}}</b> 
+                                  <span class="ms-auto">
+                                    <b class="me-2">{{mensagem.dt_inclusao|date:"d/m/y H:i"}}</b>
+                                  </span>
+                                </div>
+                                <div class="w-100 pt-3">                                  
+                                  <p>
+                                    {{mensagem.mensagem}}
+                                  </p>
+                                </div>
+                               
+                               
+                              </div>
+                              <div class="col-4">
+                                <div class="border border-bottom-0 py-3 px-4" {% if forloop.counter|divisibleby:2 %}{%else%}style="background-color: #0095ff0c;"{% endif %}>
+                                  <h4 class="my-0">Anexos</h4>
+                                </div>
+                                <div class="border py-4 px-4" {% if forloop.counter|divisibleby:2 %}{%else%}style="background-color: #0095ff0c;"{% endif %}>
+                                  {% if mensagem.anexo %}
+                                  <p class="text-center py-3"><i>
+                                    <a href="{{mensagem.anexo.url}}" target="_blank">
+                                      <i class="fa-solid fa-paperclip me-2"></i>Ver anexo                                      
+                                    </a>
+                                  </i></p>
+                                  {% else %}
+                                  <p class="text-center py-3"><i>Não há.</i></p>
+                                  {% endif %}
+                                </div>    
+                                
+                              </div>
+                            </div> 
+                          </div>
+                        </div>
+                        {% endfor %}
+                        <form method="POST" enctype="multipart/form-data">
+                          {% csrf_token %}
+                        <div class="row">
+                          <div class="col">
+                            <h4 class="mt-4">Nova Mensagem</h4>
+                            <div class="row">
+                              <div class="col">
+                                {{form_mensagem.os}}
+                                {{form_mensagem.pessoa}}
+                                {{form_mensagem.mensagem}}
+                                <!-- <textarea class="form-control h-100" name="mensagem" id=""></textarea> -->
+                              </div>
+                              <div class="col-4">
+                                <div class="border border-bottom-0 py-3 px-4" style="background-color: white;">
+                                  <h4 class="my-0">Anexar arquivo</h4>
+                                </div>
+                                <div class="border py-4 px-4" style="background-color: white;">
+                                  <p class="text-center py-3">
+                                    {{form_mensagem.anexo}}
+                                  </p>
+                                </div>    
+                                
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col d-flex">
+                                <button type="submit" class="btn btn-primary mt-3 px-5 mx-auto">
+                                  Enviar mensagem
+                                </button>
+                              </div>
+                            </div>
+                            
+                          </div>
+                        </div>
+                      </form>
+                    </div>                    
+                </div>
+            </div>
+        </div>    
+  </div>
+</div>
+<!-- MODAL -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-dark text-center" id="exampleModalToggleLabel">Deseja realmente finalizar o chamado?</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body text-dark d-flex">            
+            <form id="form" method="POST" class="mx-auto py-3">
+              {% csrf_token %}
+                <input type="hidden" name="tipo_post" value="finalizar">
+                <button class="btn btn-danger" type="submit">SIM, finalizar chamado!</button>
+            </form>
+        </div>
+        <!-- <div class="modal-footer">
+          <button class="btn btn-primary" data-bs-target="#confirmarCadastro" data-bs-toggle="modal" onclick="enviarFormulario()">Enviar</button>
+        </div> -->
+      </div>
+    </div>
+  </div>
+  <script>
+    function finalizar(){
+    
+  }
+  </script>
+  <div class="modal fade" id="confirmarCadastro" aria-hidden="true" aria-labelledby="confirmarCadastroLabel2" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-dark" id="exampleModalToggleLabel2">RESPOSTA AQUI</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Hide this modal and show the first with the button below.
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" data-bs-target="#formCandidato" data-bs-toggle="modal">Voltar ao formulário</button>
+          <button class="btn btn-success" data-bs-dismiss="modal" aria-label="Close">Confirmar informações</button>
+        </div>
+      </div>
+    </div>
+  </div>  
+  <script>
+    document.getElementById('os_painel').classList.add('s-nav-active');
+    let popover = new bootstrap.Popover(document.querySelector('.popoverbutton'), {
+        trigger: 'hover'
+    })
+  </script>
+  <style>
+    .form-select {
+      background: #eee; /*Simular campo inativo - Sugestão @GabrielRodrigues*/
+      pointer-events: none !important;
+      touch-action: none !important;
+    }
+  </style>
+{% endblock %}

@@ -1,0 +1,443 @@
+{% extends 'template.html' %}
+{% load bootstrap5 %}
+{% load static%}
+{% block nav %}
+{% include 'nav_os.html' %}
+{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/almoxarifado.css' %}">
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+{% endblock %}
+{% block os %}fw-bolder{% endblock %}
+{% block main %}
+<div class="row">
+  <div class="col d-flex py-5"> 
+        <div class="row w-100">
+            <div class="col pb-5 m-auto bg-white" style="border-radius: 30px;">                           
+                <div class="row">
+                    <div class="col">                                                
+                        <div class="pt-4 d-flex px-4">
+                        <h2 style="display: inline;">Indicadores</h2>   
+                        <button id="btnServicos" class="btn btn-outline-dark my-auto ms-auto" onclick="changeChart('servicos')"><i class="fa-solid fa-chart-pie me-2"></i>Serviços</button>                     
+                        <button id="btnBairros" class="btn btn-dark my-auto ms-1" onclick="changeChart('bairros')"><i class="fa-solid fa-chart-bar me-2"></i>Bairros</button>                     
+                        <button id="btnFuncionarios" class="btn btn-dark my-auto ms-1" onclick="changeChart('funcionarios')"><i class="fa-solid fa-chart-column me-2"></i>Funcionários</button>                     
+                        </div>                    
+                    </div>
+                </div> 
+                <script>
+                  let chartAtual='servico'
+                  let charts = ['servicos', 'bairros', 'funcionarios'];
+
+                  function changeChart(selectChart) {
+                    console.log(selectChart)                    
+                    for (let i = 0; i < charts.length; i++) {
+                      let chartId = charts[i];
+                      let chartElement = document.getElementById(chartId);
+                      let buttonElement = document.getElementById('btn' + chartId.charAt(0).toUpperCase() + chartId.slice(1));
+
+
+                      if (chartElement) {
+                        if (chartId === selectChart) {
+                          chartElement.style.display = 'block';
+                          buttonElement.classList.remove('btn-dark');
+                          buttonElement.classList.add('btn-outline-dark');
+                        } else {
+                          chartElement.style.display = 'none';
+                          buttonElement.classList.remove('btn-outline-dark');
+                          buttonElement.classList.add('btn-dark');
+                        }
+                      }
+                    }
+                    chartAtual = selectChart;
+                  }
+
+                  function exibirGraficoBairro(exibir){
+                    let buttonElement=document.getElementById('btn-'+exibir)
+                    if (exibir=='servicosPorBairro'){
+                      let outroBtn=document.getElementById('btn-pontosPorBairro');
+
+                      buttonElement.classList.remove('btn-dark');
+                      buttonElement.classList.add('btn-outline-dark');
+                      outroBtn.classList.remove('btn-outline-dark');
+                      outroBtn.classList.add('btn-dark');
+
+                      document.getElementById('pontosPorBairro').style.display='none';
+                      document.getElementById('servicosPorBairro').style.display='flex';
+
+                      
+                      
+                      
+                    }else{                      
+                      let outroBtn=document.getElementById('btn-servicosPorBairro');
+
+                      buttonElement.classList.remove('btn-dark');
+                      buttonElement.classList.add('btn-outline-dark');
+                      outroBtn.classList.remove('btn-outline-dark');
+                      outroBtn.classList.add('btn-dark');
+
+                      document.getElementById('servicosPorBairro').style.display='none';
+                      document.getElementById('pontosPorBairro').style.display='flex';
+                      
+                      
+                    }
+                  }
+                </script> 
+                <div class="row" id="servicos">
+                  <div class="col">
+                    <div class="row">
+                      <div class="col">
+                        <script type="text/javascript">
+                          google.charts.load('current', {'packages':['corechart']});
+                          google.charts.setOnLoadCallback(drawChart);
+    
+                          function drawChart() {
+    
+                            var data = google.visualization.arrayToDataTable([
+                              ['Task', 'Hours per Day'],
+                              ['Finalizados',     {{finalizados}}],
+                              ['Não finalizados',      {{nao_finalizados}}],                            
+                            ]);
+    
+                            var options = {
+                              title: 'Finalizados x Não Finalizados'
+                            };
+    
+                            var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+    
+                            chart.draw(data, options);
+                          }
+                        </script>
+                        <div id="piechart" style="width: 500px; height: 400px;"></div>
+                      </div>                                            
+                      <div class="col d-flex pb-4">                        
+                        <div class="card-grafico me-5 my-auto p-4">
+                          <table class="table text-center" style="width: 450px;">
+                            <thead>
+                              <th>Mês ano</th>
+                              <th>Finalizados</th>
+                              <th>Não finalizados</th>
+                            </thead>
+                            <tbody>
+                              {% for i in servicos_grafico_linha_dados %}
+                              <tr>
+                                <td>{{i.0}}</td>
+                                <td>{{i.1}}</td>
+                                <td>{{i.2}}</td>
+                              </tr>
+                              {% endfor %}
+                            </tbody>
+                          </table>
+                        </div>
+                        <div class="d-flex flex-column me-4">
+                          <div href="https://www.cecierj.edu.br/" class="card-universidade btn  mx-auto mt-auto d-flex flex-column">
+                            Finalizados:
+                            <h1>{{finalizados}}</h1>
+                          </div>
+                          <div href="http://www.cefet-rj.br/" class="card-universidade btn  mx-auto mt-3 mb-auto d-flex flex-column">
+                            Não finalizados:
+                            <h1>{{nao_finalizados}}</h1>
+                          </div>
+                        </div>  
+                      </div>                  
+                    </div> 
+                    <div class="row">
+                      <div class="col">                            
+                        <script type="text/javascript">
+                          google.charts.load('current', {'packages':['corechart']});
+                          google.charts.setOnLoadCallback(drawChart);
+                    
+                          function drawChart() {
+                            var data = google.visualization.arrayToDataTable([
+                              ['Year', 'Finalizados', 'Não finalizados'],
+                              {% for i in servicos_grafico_linha_dados %}
+                                        ['{{ i.0 }}', {{ i.1 }}, {{ i.2 }}],
+                              {% endfor %}
+                            ]);
+                    
+                            var options = {
+                              title: 'Serviços por mês',
+                              curveType: 'function',
+                              legend: { position: 'bottom' }
+                            };
+                    
+                            var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+                    
+                            chart.draw(data, options);
+                          }
+                        </script>
+                        <div id="curve_chart" class="mx-auto" style="width: 100%; height: 400px; margin-top: -60px;"></div>
+                      </div>
+                    </div>               
+                    <div class="row">
+                      <div class="col d-flex pt-4">                                          
+    
+                          <script type="text/javascript">
+                            google.charts.load('current', {'packages':['corechart']});
+                            google.charts.setOnLoadCallback(drawChart);
+    
+                            function drawChart() {
+    
+                              var data = google.visualization.arrayToDataTable([
+                                ['Sigla', 'Total'],
+                                {% for item in os_finalizadas_por_tipo %}
+                                ['{{item.tipo__sigla}}: {{item.total_finalizadas}}',     {{item.total_finalizadas}}],
+                                {% endfor %}                            
+                              ]);
+    
+                              var options = {
+                                title: 'Finalizados por tipo'
+                              };
+    
+                              var chart = new google.visualization.PieChart(document.getElementById('piechart2'));
+    
+                              chart.draw(data, options);
+                            }
+                          </script>
+                          <div id="piechart2" class="mx-auto" style="width: 600px; height: 400px;"></div>
+    
+                          <script type="text/javascript">
+                            google.charts.load('current', {'packages':['corechart']});
+                            google.charts.setOnLoadCallback(drawChart);
+    
+                            function drawChart() {
+    
+                              var data = google.visualization.arrayToDataTable([
+                                ['Sigla', 'Total'],
+                                {% for item in os_nao_finalizadas_por_tipo %}
+                                ['{{item.tipo__sigla}}: {{item.total_nao_finalizadas}}',     {{item.total_nao_finalizadas}}],
+                                {% endfor %}      
+                              ]);
+    
+                              var options = {
+                                title: 'Não finalizados por tipo'
+                              };
+    
+                              var chart = new google.visualization.PieChart(document.getElementById('piechart3'));
+    
+                              chart.draw(data, options);
+                            }
+                          </script>
+                          <div id="piechart3" class="mx-auto" style="width: 600px; height: 400px;"></div>
+                      </div>
+                    </div>                                        
+                  </div>                  
+                </div>
+                <div class="row" id="bairros">
+                  <div class="col d-flex flex-column">
+                    <div class="d-flex m-auto py-5">
+                      <button id="btn-servicosPorBairro" onclick="exibirGraficoBairro('servicosPorBairro')" class="btn btn-dark">
+                        Serviços por bairros
+                      </button>
+                      <button id="btn-pontosPorBairro" onclick="exibirGraficoBairro('pontosPorBairro')" class="ms-2 btn btn-dark">
+                        Pontos por bairros
+                      </button>
+                    </div>
+                    <script src="https://code.highcharts.com/highcharts.js"></script>
+                    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+                    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+                
+                    <div id="servicosPorBairro">
+                      <div id="barChart" style="width: 100%; height:2000px;"></div>
+                      <div id="barChart2" style="width: 100%; height:2000px;"></div>
+                    </div>
+                    <div id="pontosPorBairro">                      
+                      <div id="barChart3" style="width: 100%; height:2000px;"></div>
+                      <div id="barChart4" style="width: 100%; height:2000px;"></div>
+                    </div>
+                    <script>
+                        // Dados dos bairros não finalizados
+                        var bairros = [{% for item in servicos_por_bairro_nao_finalizados %}"{{ item.bairro }}", {% endfor %}];
+                        var nao_finalizados = [{% for item in servicos_por_bairro_nao_finalizados %}{{ item.total }}, {% endfor %}];
+                        
+                        var dataFormatted = bairros.map(function(bairro, index) {
+                            return bairro + ' - ' + nao_finalizados[index];
+                        });
+                        // Criação do gráfico
+                        Highcharts.chart('barChart', {
+                            chart: {
+                                type: 'bar', // Define o tipo de gráfico como barras
+                                height: 2000// Altura do gráfico
+                            },
+                            title: {
+                                text: 'Serviços por bairros, não finalizados' // Título do gráfico
+                            },
+                            xAxis: {
+                                categories: dataFormatted, // Eixo x com os nomes dos bairros formatados
+                            },
+                            yAxis: {
+                                title: {
+                                    text: 'Bairro' // Título do eixo y
+                                }
+                            },
+                            series: [{
+                                name: 'Não finalizados',
+                                data: nao_finalizados // Dados das barras não finalizadas
+                            }],
+                            plotOptions: {
+                                bar: {
+                                    horizontal: true // Define as barras como horizontais
+                                }
+                            }
+                        });
+                    
+                      // Dados dos bairros finalizados
+                      var bairros2 = [{% for item in servicos_por_bairro_finalizados %}"{{ item.bairro }}", {% endfor %}];
+                      var finalizados = [{% for item in servicos_por_bairro_finalizados %}{{ item.total }}, {% endfor %}];
+                      
+                      var dataFormatted = bairros2.map(function(bairro, index) {
+                          return bairro + ' - ' + finalizados[index];
+                      });
+
+                      // Criação do gráfico
+                      Highcharts.chart('barChart2', {
+                          chart: {
+                              type: 'bar', // Define o tipo de gráfico como barras
+                              height: 2000// Altura do gráfico
+                          },
+                          title: {
+                              text: 'Serviços por bairros, finalizados' // Título do gráfico
+                          },
+                          xAxis: {
+                              categories: dataFormatted, // Eixo x com os nomes dos bairros formatados
+                          },
+                          yAxis: {
+                              title: {
+                                  text: 'Bairro' // Título do eixo y
+                              }
+                          },
+                          series: [{
+                              name: 'Finalizados',
+                              data: finalizados // Dados das barras não finalizadas
+                          }],
+                          plotOptions: {
+                              bar: {
+                                  horizontal: true // Define as barras como horizontais
+                              }
+                          }
+                      });
+
+                      // Dados dos pontos não finalizados
+                      var bairros3 = [{% for item in pontos_por_bairro_nao_finalizados %}"{{ item.bairro }}", {% endfor %}];
+                      var p_n_finalizados = [{% for item in pontos_por_bairro_nao_finalizados %}{{ item.total }}, {% endfor %}];
+                        
+                      var dataFormatted = bairros3.map(function(bairro, index) {
+                          return bairro + ' - ' + p_n_finalizados[index];
+                      });
+                      // Criação do gráfico
+                      Highcharts.chart('barChart3', {
+                          chart: {
+                              type: 'bar', // Define o tipo de gráfico como barras
+                              height: 2000// Altura do gráfico
+                          },
+                          title: {
+                              text: 'Pontos por bairros, não finalizados' // Título do gráfico
+                          },
+                          xAxis: {
+                              categories: dataFormatted, // Eixo x com os nomes dos bairros formatados
+                          },
+                          yAxis: {
+                              title: {
+                                  text: 'Bairro' // Título do eixo y
+                              }
+                          },
+                          series: [{
+                              name: 'Pontos não finalizados',
+                              data: p_n_finalizados // Dados das barras não finalizadas
+                          }],
+                          plotOptions: {
+                              bar: {
+                                  horizontal: true // Define as barras como horizontais
+                              }
+                          }
+                      });
+                      // Dados dos pontos não finalizados
+                      var bairros4 = [{% for item in pontos_por_bairro_finalizados %}"{{ item.bairro }}", {% endfor %}];
+                      var p_finalizados = [{% for item in pontos_por_bairro_finalizados %}{{ item.total }}, {% endfor %}];
+                        
+                      var dataFormatted = bairros4.map(function(bairro, index) {
+                          return bairro + ' - ' + p_finalizados[index];
+                      });
+                      // Criação do gráfico
+                      Highcharts.chart('barChart4', {
+                          chart: {
+                              type: 'bar', // Define o tipo de gráfico como barras
+                              height: 2000// Altura do gráfico
+                          },
+                          title: {
+                              text: 'Pontos por bairros, finalizados' // Título do gráfico
+                          },
+                          xAxis: {
+                              categories: dataFormatted, // Eixo x com os nomes dos bairros formatados
+                          },
+                          yAxis: {
+                              title: {
+                                  text: 'Bairro' // Título do eixo y
+                              }
+                          },
+                          series: [{
+                              name: 'Pontos finalizados',
+                              data: p_finalizados // Dados das barras não finalizadas
+                          }],
+                          plotOptions: {
+                              bar: {
+                                  horizontal: true // Define as barras como horizontais
+                              }
+                          }
+                      });
+                  </script>
+                    
+                  </div>
+                </div>
+                <div class="row" id="funcionarios">
+                  <div class="col d-flex">
+                    <span class="m-auto">
+                      EM CONSTRUÇÃO
+                    </span>
+                  </div>
+                </div>                                               
+                <style>
+                  .card-universidade{                    
+                    display: flex;
+                    background-color: white;
+                    width: 300px;
+                    height: 110px;
+                    border-radius: 30px;          
+                    color: rgb(59, 59, 59);
+                    border: 1px solid rgb(247, 247, 247);
+                    box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1);          
+                    padding-top: 20px;
+                    padding-bottom: 20px;
+                  }  
+                  .card-grafico{
+                    display: flex;
+                    border: 1px solid rgb(247, 247, 247);
+                    width: 480px;
+                    background-color: white;                    
+                    border-radius: 20px;
+                    color: rgb(59, 59, 59);
+                    
+                    box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1);
+                    padding-top: 20px;
+                    padding-bottom: 20px;
+                  }              
+                  .card-universidade img{
+                    max-height: 100px;
+          
+                  }
+                  #bairros, #funcionarios, #servicosPorBairro, #pontosPorBairro{
+                    display: none;
+                  }
+
+                </style>
+                </div>
+            </div>
+        </div>    
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  document.getElementById('os_kpi').classList.add('s-nav-active');  
+</script>
+
+{% endblock %}

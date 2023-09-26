@@ -1,0 +1,66 @@
+{% extends 'template.html' %}
+{% load static%}
+{% block nav %}
+{% include 'nav_os.html' %}
+{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/index.css' %}">
+{% endblock %}
+{% block index %}fw-bold{% endblock %}
+{% block main %}
+<div id="banner" class="row">
+    <div class="col d-flex">        
+        <h1 class="display-1 m-auto pb-2">
+            <!-- BEM-VINDO -->
+        </h1>
+    </div>
+</div>
+{% if messages %}              
+<!-- MODAL -->
+<div class="modal fade" id="resposta" aria-hidden="true" aria-labelledby="respostaLabel" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        {% for message in messages %}
+        <div class="modal-header {% if message.tags %}{{message.tags}}{% endif %} border-0">
+          <h5 class="modal-title text-dark text-center" id="exampleModalToggleLabel"></h5>
+          <button type="button" onclick="myModal.hide();" class="btn-close"></button>
+        </div>
+        <div class="modal-body px-5 {% if message.tags %}{{message.tags}}{% endif %}">   
+           
+          <p class="px-4 py-3 text-center">
+            {{ message|escape }}
+          </p>
+          
+          
+        </div>
+        <div class="modal-footer {% if message.tags %}{{message.tags}}{% endif %} border-0">
+          
+        </div>
+        {% endfor %}
+      </div>
+
+    </div>
+  </div>   
+  <script>
+   var myModal = new bootstrap.Modal(document.getElementById('resposta'))
+   myModal.toggle()
+  </script>
+  <style>
+    .error{
+      background-color: rgb(238, 171, 171);
+      color: darkred;
+      font-weight: 600;
+    }
+    .success{
+      background-color: rgb(182, 238, 171);
+      color: rgb(0, 139, 19);
+      font-weight: 600
+    }
+    .warning{
+      background-color: rgb(238, 226, 171);
+      color: rgb(139, 107, 0);
+      font-weight: 600
+    }
+  </style>
+{% endif %} 
+{% endblock %}

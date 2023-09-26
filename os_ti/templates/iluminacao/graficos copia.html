@@ -1,0 +1,235 @@
+{% extends 'template.html' %}
+{% load bootstrap5 %}
+{% load static%}
+{% block nav %}
+{% include 'nav_os.html' %}
+{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/almoxarifado.css' %}">
+{% endblock %}
+{% block os %}fw-bolder{% endblock %}
+{% block main %}
+<div class="row">
+  <div class="col d-flex py-5"> 
+        <div class="row w-100">
+            <div class="col-10 pb-5 m-auto bg-white" style="border-radius: 30px;">                           
+                <div class="row">
+                    <div class="col px-4">                                                
+                        <div class="px-2 pt-4 d-flex">
+                        <h2 style="display: inline;">Indicadores</h2>                        
+                        </div>                    
+                    </div>
+                </div>  
+                <div class="row">
+                  <div class="col d-flex pb-4">
+                    <div href="https://www.cecierj.edu.br/" class="card-universidade btn  me-1 ms-auto d-flex flex-column">
+                      Finalizados:
+                      <h1>{{finalizados}}</h1>
+                    </div>
+                    <div href="http://www.cefet-rj.br/" class="card-universidade btn  ms-1 me-auto d-flex flex-column">
+                      Não finalizados:
+                      <h1>{{nao_finalizados}}</h1>
+                    </div>  
+                  </div>
+                </div>                
+                <div class="row">
+                  <div class="col d-flex">
+                    <div class="mx-auto">
+                      <div id="chart_div"></div>                         
+                      <p class="text-center">
+                        <a href="{% url 'iluminacao:kpi_ver_mais' 'pontos-por-bairro' 'exibir' %}">
+                          Ver mais
+                        </a>                 
+                      </p>
+                    </div>                    
+                  </div>              
+                </div>
+                <div class="row">
+                  <div class="col d-flex">
+                    <div class="mx-auto">
+                      <div id="chart_div2"></div>                    
+                      <p class="text-center">
+                        <a href="{% url 'iluminacao:kpi_ver_mais' 'os-por-bairro' 'exibir' %}">
+                          Ver mais
+                        </a>                 
+                      </p>
+                    </div>
+                  </div>              
+                </div>
+                <div class="row">
+                  <div class="col d-flex">
+                    <div class="mx-auto">
+                      <div id="chart_div3"></div>  
+                      <p class="text-center">
+                        <a href="{% url 'iluminacao:kpi_ver_mais' 'pontos-por-funcionario' 'exibir' %}">
+                          Ver mais
+                        </a>                 
+                      </p>                  
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col d-flex">
+                    <div class="mx-auto">
+                      <div id="chart_div4"></div>  
+                      <p class="text-center">
+                        <a href="#">
+                          Ver mais
+                        </a>                 
+                      </p>                  
+                    </div>
+                  </div>
+                </div>
+                                               
+                <style>
+                  .card-universidade{                    
+                    display: flex;
+                    background-color: white;
+                    width: 300px;
+                    height: 110px;
+                    border-radius: 30px;          
+                    color: rgb(59, 59, 59);
+                    border-color: rgb(255, 255, 255);
+                    box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1);          
+                    padding-top: 20px;
+                    padding-bottom: 20px;
+                  }                
+                  .card-universidade img{
+                    max-height: 100px;
+          
+                  }
+                </style>
+                </div>
+            </div>
+        </div>    
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  document.getElementById('os_painel').classList.add('s-nav-active');  
+</script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+
+  // Load the Visualization API and the corechart package.
+  google.charts.load('current', {'packages':['corechart']});
+
+  // Set a callback to run when the Google Visualization API is loaded.
+  google.charts.setOnLoadCallback(drawChart);
+
+  // Callback that creates and populates a data table,
+  // instantiates the pie chart, passes in the data and
+  // draws it.
+  function drawChart() {
+
+    // Create the data table.
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Bairro');
+    data.addColumn('number', 'Pontos');
+    data.addRows([
+      {% for item in pontos_por_bairro %}
+      ['{{item.bairro}}', {{item.total}}],
+      {% endfor %}
+    ]);
+
+    // Set chart options
+    var options = {'title':'Pontos por bairro',
+                   'width':800,
+                   'height':500};
+
+    // Instantiate and draw our chart, passing in some options.
+    var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
+    chart.draw(data, options);
+  }
+</script>
+<script type="text/javascript">
+
+  // Set a callback to run when the Google Visualization API is loaded.
+  google.charts.setOnLoadCallback(drawChart2);
+
+  // Callback that creates and populates a data table,
+  // instantiates the pie chart, passes in the data and
+  // draws it.
+  function drawChart2() {
+
+    // Create the data table.
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Bairro');
+    data.addColumn('number', 'OS');
+    data.addRows([
+      {% for item in os_por_bairro %}
+      ['{{item.bairro}}', {{item.total}}],
+      {% endfor %}
+    ]);
+
+    // Set chart options
+    var options = {'title':'OS por bairro',
+                   'width':800,
+                   'height':500};
+
+    // Instantiate and draw our chart, passing in some options.
+    var chart = new google.visualization.BarChart(document.getElementById('chart_div2'));
+    chart.draw(data, options);
+  }
+</script>
+<script type="text/javascript">
+
+  // Set a callback to run when the Google Visualization API is loaded.
+  google.charts.setOnLoadCallback(drawChart3);
+
+  // Callback that creates and populates a data table,
+  // instantiates the pie chart, passes in the data and
+  // draws it.
+  function drawChart3() {
+
+    // Create the data table.
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Funcionário');
+    data.addColumn('number', 'OS');
+    data.addRows([
+      {% for item in pontos_por_funcionario %}
+      ['{{item}}', {{item.total_pontos}}],
+      {% endfor %}
+    ]);
+
+    // Set chart options
+    var options = {'title':'Pontos do Funcionario',
+                   'width':800,
+                   'height':500};
+
+    // Instantiate and draw our chart, passing in some options.
+    var chart = new google.visualization.BarChart(document.getElementById('chart_div3'));
+    chart.draw(data, options);
+  }
+</script>
+<script type="text/javascript">
+
+  // Set a callback to run when the Google Visualization API is loaded.
+  google.charts.setOnLoadCallback(drawChart4);
+
+  // Callback that creates and populates a data table,
+  // instantiates the pie chart, passes in the data and
+  // draws it.
+  function drawChart4() {
+
+    // Create the data table.
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Funcionário');
+    data.addColumn('number', 'Quantidade de bairros atendidos');
+    data.addRows([
+      {% for item in os_por_funcionario %}
+      ['{{item}}', {{item.total_os}}],
+      {% endfor %}
+    ]);
+
+    // Set chart options
+    var options = {'title':'Bairros por Funcionario',
+                   'width':800,
+                   'height':500};
+
+    // Instantiate and draw our chart, passing in some options.
+    var chart = new google.visualization.BarChart(document.getElementById('chart_div4'));
+    chart.draw(data, options);
+  }
+</script>
+{% endblock %}

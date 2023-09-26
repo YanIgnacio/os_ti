@@ -1,0 +1,130 @@
+{% extends 'template.html' %}
+{% load bootstrap5 %}
+{% load static%}
+{% block nav %}
+{% include 'nav_os.html' %}
+{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/almoxarifado.css' %}">
+{% endblock %}
+{% block os %}fw-bolder{% endblock %}
+{% block main %}
+<div class="row">
+  <div class="col d-flex py-5">
+    <div class="row w-100">
+      <div class="col pb-5 m-auto bg-white" style="border-radius: 30px;">
+        <div class="row">
+          <div class="col px-4">
+            <div class="px-2 pt-4 d-flex">
+              <h2 style="display: inline;">Indicadores - {{tipo}}</h2>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col d-flex">
+            <a href="{% url 'iluminacao:kpi_ver_mais' 'pontos-por-bairro' 'imprimir' %}"
+              class="btn btn-secondary ms-auto  ">
+              <i class="fa-solid fa-print me-2"></i> Imprimir
+            </a>
+            <a href="{% url 'iluminacao:kpi_ver_mais' 'pontos-por-bairro' 'download' %}"
+              class="btn btn-secondary ms-2 me-auto  ">
+              <i class="fa-solid fa-file-excel me-2"></i> Download Excel
+            </a>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col d-flex">
+            <div class="w-100" style="height: 100%;" id="chart_div"></div>
+          </div>
+        </div>
+
+        <style>
+          .card-universidade {
+            display: flex;
+            background-color: white;
+            width: 300px;
+            height: 100px;
+            border-radius: 30px;
+            color: rgb(59, 59, 59);
+            border-color: rgb(255, 255, 255);
+            box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+            padding-top: 20px;
+            padding-bottom: 20px;
+          }
+
+          .card-universidade img {
+            max-height: 100%;
+
+          }
+        </style>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  document.getElementById('os_painel').classList.add('s-nav-active');  
+</script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+
+  // Load the Visualization API and the corechart package.
+  google.charts.load('current', { 'packages': ['corechart'] });
+
+  // Set a callback to run when the Google Visualization API is loaded.
+  google.charts.setOnLoadCallback(drawChart);
+
+  // Callback that creates and populates a data table,
+  // instantiates the pie chart, passes in the data and
+  // draws it.
+  function drawChart() {
+
+    // Create the data table.
+    var data = google.visualization.arrayToDataTable([
+      ['{{y}}', '{{x}}', { role: 'annotation' }],
+      {% for item in dados %}
+  ['{{item.y}}', {{ item.total }}, {{ item.total }}],
+    {% endfor %}
+          ]);
+  // var data = new google.visualization.DataTable();
+  // data.addColumn('string', '{{y}}');
+  // data.addColumn('number', '{{x}}');
+  // data.addRows([
+  //   {% for item in dados %}
+  //   ['{{item.y}}', {{item.total}}],
+  //   {% endfor %}
+  // ]);
+
+  // Set chart options
+  var options = {
+    'title': 'Pontos por bairro',
+    'width': '100vw',
+    'height': "100%",
+    'padding-bottom':'20px', 
+    'hAxis': {
+      'textStyle': {
+        'fontSize': 15 // or the number you want
+      }
+    },
+    'vAxis': {
+      'textStyle': {
+        'fontSize': 10   // or the number you want
+      }
+    },
+    'annotations': {
+      'textStyle': {
+        'fontSize': 9,
+        'bold': true,
+      }
+    },
+  };
+
+  // Instantiate and draw our chart, passing in some options.
+  var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
+
+  chart.draw(data, options);
+  }
+</script>
+{% endblock %}

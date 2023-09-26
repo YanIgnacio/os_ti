@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ordem de Serviço</title>
+    {% load static %}
+    <style type="text/css">
+            body{              
+                -webkit-print-color-adjust:exact;
+            }
+            .row{
+                width: 100%;
+                display: flex;
+            }
+            .col{
+                width: 100%;
+                height: 100vh;
+                display: flex;
+                flex-direction: column;
+            }          
+            .d-flex{
+                display: flex;
+            }
+            .d-flex div{
+                width: 100%;
+            }
+            .text-right{
+                text-align: end;
+            }
+    </style>
+</head>
+<body>
+    {% for os in lista_de_os %}
+    <div class="row ">
+        <div class="col">
+            <div class="d-flex">
+                <div>
+                    <img src="" alt="">
+                </div>
+                <div>
+                    <img src="/static/images/pmnf_logo.png" alt="">
+                </div>
+            </div>
+            <!-- <p><strong>{{os.numero}}</strong></p> -->
+            <div class="d-flex">
+                <div>
+                    <p><strong>Nº OS:</strong> {{os.numero}}</p>
+                </div>
+                <div>
+                    <p class="text-right"><strong>Data de solicitação: </strong>{{os.dt_solicitacao|date:"d/m/Y"}}</p>
+                </div>                
+            </div>
+            <div class="d-flex" style="border: 1px solid gray;">
+                <div style="margin-left: 10px;">
+                    <p><strong>Logradouro:</strong>
+                        {{os.logradouro}}</p>
+                    <p><strong>Bairro:</strong>
+                            {{os.bairro}}</p>
+                    <p><strong>Referência:</strong>
+                        {{os.referencia}}</p>
+                </div>                
+            </div>
+            <div class="d-flex">
+                <div>
+                    <p>
+                        <strong>Contribuinte:</strong>
+                        {{os.nome_do_contribuinte}}
+                    </p>                   
+                </div>
+                <div>
+                    <p>
+                        <strong>Telefone do contribuinte:</strong>
+                        {{os.telefone_do_contribuinte}}
+                    </p>
+                </div>
+            </div>
+            <div>
+                <p><strong>Motivo da reclamação:</strong>
+                {{os.motivo_reclamacao}}
+                </p>
+            </div>
+            <div class="d-flex">
+                <div>
+                    <p><strong>Código do Veículo:</strong></p>
+                    <div style="height: 100px;">
+                        <strong>Equipe:</strong>
+                    </div>
+                </div>
+                <div>
+                    <p><strong>Quantidade de pontos:</strong></p>
+                    <p><strong>Data conclusão:</strong></p>
+                </div>
+            </div>
+            <div style="border-top: 1px solid black;"></div>
+            <div class="d-flex" style="margin-top: 20px;">
+                <div>
+                    <p><strong>Materiais:</strong></p>
+                    <div class="d-flex">
+                        <div class="text-right" style="width: 100px;">Lâmpada</div>
+                        <div class="margin-left: 10px">_____________</div>
+                    </div>
+                    <div class="d-flex" style=" margin-top: 15px;">
+                        <div class="text-right" style="width: 100px;">Reator</div>
+                        <div class="margin-left: 10px">_____________</div>
+                    </div>
+                    <div class="d-flex" style=" margin-top: 15px;">
+                        <div class="text-right" style="width: 100px;">Luminária</div>
+                        <div class="margin-left: 10px">_____________</div>
+                    </div>
+                    <div class="d-flex" style=" margin-top: 15px;">
+                        <div class="text-right" style="width: 100px;">Conector</div>
+                        <div class="margin-left: 10px">_____________</div>
+                    </div>
+                    <div class="d-flex" style=" margin-top: 15px;">
+                        <div class="text-right" style="width: 100px;">Ignitor</div>
+                        <div class="margin-left: 10px">_____________</div>
+                    </div>
+                    <div class="d-flex" style=" margin-top: 15px;">
+                        <div class="text-right" style="width: 100px;">Relé Fotoelétrico</div>
+                        <div class="margin-left: 10px">_____________</div>
+                    </div>
+                    <div class="d-flex" style=" margin-top: 15px;">
+                        <div class="text-right" style="width: 100px;">Base Relé</div>
+                        <div class="margin-left: 10px">_____________</div>
+                    </div>
+                    <div class="d-flex" style=" margin-top: 15px;">
+                        <div class="text-right" style="width: 100px;">Fio</div>
+                        <div class="margin-left: 10px">_____________</div>
+                    </div>
+                    <div class="d-flex" style=" margin-top: 15px;">
+                        <div class="text-right" style="width: 100px;">Braço</div>
+                        <div class="margin-left: 10px">_____________</div>
+                    </div>
+                    <div class="d-flex" style=" margin-top: 15px;">
+                        <div class="text-right" style="width: 100px;">Bocal</div>
+                        <div class="margin-left: 10px">_____________</div>
+                    </div>
+                    <div class="d-flex" style=" margin-top: 15px;">
+                        <div class="text-right" style="width: 100px;">Conector</div>
+                        <div class="margin-left: 10px">_____________</div>
+                    </div>
+                </div>
+                <div>
+                    <p><strong>Serviços:</strong></p>
+                    <div class="d-flex" style=" margin-top: 15px;">
+                        <div class="text-right" style="width: 400px;">Troca de Lâmpada</div>
+                        <div class="padding-left: 20px"><input type="radio" name="" id=""></div>
+                    </div>
+                    <div class="d-flex" style=" margin-top: 15px;">
+                        <div class="text-right" style="width: 400px;">Eliminação de mau contato</div>
+                        <div class="padding-left: 20px"><input type="radio" name="" id=""></div>
+                    </div>
+                    <div class="d-flex" style=" margin-top: 15px;">
+                        <div class="text-right" style="width: 400px;">Troca de relé fotoelétrico</div>
+                        <div class="padding-left: 20px"><input type="radio" name="" id=""></div>
+                    </div>
+                    <div class="d-flex" style=" margin-top: 15px;">
+                        <div class="text-right" style="width: 400px;">Limpeza de luminárias</div>
+                        <div class="padding-left: 20px"><input type="radio" name="" id=""></div>
+                    </div>
+                    <div class="d-flex" style=" margin-top: 15px;">
+                        <div class="text-right" style="width: 400px;">Troca de reator</div>
+                        <div class="padding-left: 20px"><input type="radio" name="" id=""></div>
+                    </div>
+                    <div class="d-flex" style=" margin-top: 15px;">
+                        <div class="text-right" style="width: 400px;">Inversão de polaridade</div>
+                        <div class="padding-left: 20px"><input type="radio" name="" id=""></div>
+                    </div>
+                    <div class="d-flex" style=" margin-top: 15px;">
+                        <div class="text-right" style="width: 400px;">Troca de conector</div>
+                        <div class="padding-left: 20px"><input type="radio" name="" id=""></div>
+                    </div>
+                    <div class="d-flex" style=" margin-top: 15px;">
+                        <div class="text-right" style="width: 400px;">Troca de bocal</div>
+                        <div class="padding-left: 20px"><input type="radio" name="" id=""></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+<SCRIPT LANGUAGE="JavaScript">
+    window.print();
+    setTimeout(function(){
+        window.close();
+    },2000);
+</SCRIPT>
+</body>
+</html>

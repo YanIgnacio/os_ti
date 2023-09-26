@@ -1,0 +1,102 @@
+{% extends 'template.html' %}
+{% load bootstrap5 %}
+{% load static%}
+{% block nav %}
+{% include 'nav_os.html' %}
+{% endblock %}
+{% block title %}BEM VINDO{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/almoxarifado.css' %}">
+
+{% endblock %}
+{% block os %}fw-bolder{% endblock %}
+{% block main %}
+<div class="row">
+  <div class="col d-flex py-5"> 
+        <div class="row w-100">
+            <div class="col-10 pb-4 m-auto bg-white">
+                <!-- <div class="row py-3 px-4">
+                    <div class="col bg p-5">
+                        <h1 class="display-4 text-center">ORDEM DE SERVIÇO</h1>
+                    </div>
+                </div>               -->
+                <div class="row">
+                    <div class="col px-4">                                                
+                        <div class="px-2 py-3">
+                        <h2>Painel Administrativo</h2>
+                        </div>
+                        <div class="px-2 pt-4">
+                          <div class="d-flex justify-content-between">
+                          <h4>
+                            Lista de funcionários
+                          </h4>
+                          <a href="{% url 'iluminacao:cadastrar funcionario' %}" class="btn btn-primary">Adicionar</a>
+                        </div>
+                          <table class="table">
+                            <thead>
+                              <tr>
+                                <th>Nome</th>
+                                <th>Telefone</th>  
+                                <th>CPF</th>
+                                <th>Editar</th>                                                         
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {% for f in funcionarios %}
+                              <tr>
+                                <td>{{f.pessoa.nome}}</td>                                
+                                <td>{{f.pessoa.telefone}}</td>
+                                <td>{{f.pessoa.cpf}}</td>
+                                <td><a href="{% url 'iluminacao:editar funcionario' f.id %}"><i class="fa-solid fa-pen-to-square"></i></a></td>
+                              </tr>
+                              {% endfor %}
+                            </tbody>
+                          </table>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>    
+  </div>
+</div>
+<!-- MODAL -->
+<div class="modal fade" id="formCandidato" aria-hidden="true" aria-labelledby="formCandidatoLabel" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-dark text-center" id="exampleModalToggleLabel">CANDIDATAR-SE A ESCOLINHA DE SKATE</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body text-dark">            
+            <form id="form" action="#">
+                
+            </form>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary" data-bs-target="#confirmarCadastro" data-bs-toggle="modal" onclick="enviarFormulario()">Enviar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="confirmarCadastro" aria-hidden="true" aria-labelledby="confirmarCadastroLabel2" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-dark" id="exampleModalToggleLabel2">RESPOSTA AQUI</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Hide this modal and show the first with the button below.
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" data-bs-target="#formCandidato" data-bs-toggle="modal">Voltar ao formulário</button>
+          <button class="btn btn-success" data-bs-dismiss="modal" aria-label="Close">Confirmar informações</button>
+        </div>
+      </div>
+    </div>
+  </div>  
+  <script>
+   
+  </script>
+{% endblock %}
