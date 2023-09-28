@@ -8,5 +8,6 @@ admin.site.register(Logradouro)
 admin.site.register(Tipo_OS)
 admin.site.register(OS_ext)
 admin.site.register(OS_Linha_Tempo)
+admin.site.register(Pessoa)
 
 # Register your models here.

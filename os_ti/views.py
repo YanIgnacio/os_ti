@@ -121,7 +121,7 @@ def os_painel(request):
     #     SUM(EXTRACT(MONTH FROM dt_solicitacao) = 11) AS `nov`,
     #     SUM(EXTRACT(MONTH FROM dt_solicitacao) = 12) AS `dez`
     # FROM
-    #     iluminacao_ordemdeservico
+    #     os_ti_ordemdeservico
     # WHERE
     #     bairro IS NOT NULL
     #     AND status IN ('0', '1', '2')
@@ -143,7 +143,7 @@ def os_painel(request):
     #     data.append({'bairro': bairro, 'mes': os_por_mes, 'total': total})
 
     # query = """
-    #     SELECT (SELECT COUNT(*) FROM iluminacao_ordemdeservico WHERE status!='f' and bairro = main.bairro GROUP BY bairro) as total, bairro, (SELECT COUNT(dt_solicitacao) FROM iluminacao_ordemdeservico GROUP BY bairro), 
+    #     SELECT (SELECT COUNT(*) FROM os_ti_ordemdeservico WHERE status!='f' and bairro = main.bairro GROUP BY bairro) as total, bairro, (SELECT COUNT(dt_solicitacao) FROM os_ti_ordemdeservico GROUP BY bairro), 
     #         CASE
     #             WHEN strftime('%m', dt_solicitacao) = '01' THEN 'Janeiro'
     #             WHEN strftime('%m', dt_solicitacao) = '02' THEN 'Fevereiro'
@@ -159,16 +159,16 @@ def os_painel(request):
     #             WHEN strftime('%m', dt_solicitacao) = '12' THEN 'Dezembro'
     #             ELSE NULL
     #     END AS nome_mes
-    #     FROM iluminacao_ordemdeservico as main
+    #     FROM os_ti_ordemdeservico as main
     #     WHERE status != 'f'
     #     GROUP BY bairro
     #     ORDER BY bairro;
     #     """
     query = """
-        SELECT (SELECT COUNT(*) FROM iluminacao_ordemdeservico WHERE status!='f' and bairro = main.bairro GROUP BY bairro) as total,bairro, 
+        SELECT (SELECT COUNT(*) FROM os_ti_ordemdeservico WHERE status!='f' and bairro = main.bairro GROUP BY bairro) as total,bairro, 
         COUNT(dt_solicitacao), 
         MONTHNAME(dt_solicitacao) AS nome_mes 
-        FROM iluminacao_ordemdeservico as main 
+        FROM os_ti_ordemdeservico as main 
         WHERE status != 'f' 
         GROUP BY bairro, MONTH(dt_solicitacao) 
         ORDER BY bairro; 
@@ -222,10 +222,10 @@ def os_painel(request):
 
     # print(resultados_agrupados)
     context = {
-        'titulo': apps.get_app_config('iluminacao').verbose_name,   
+        'titulo': apps.get_app_config('os_ti').verbose_name,   
         'results': resultados_agrupados  
     }
-    return render(request, 'iluminacao/painel.html', context)
+    return render(request, 'os_ti/painel.html', context)
 
 @login_required
 @group_required('os_acesso')
@@ -285,7 +285,7 @@ def os_index(request):
             pass
     try:
         # Construa a consulta personalizada
-        sql = "SELECT * FROM iluminacao_ordemdeservico WHERE status != 'f'"
+        sql = "SELECT * FROM os_ti_ordemdeservico WHERE status != 'f'"
 
         if protocolo:
             sql += f" AND numero LIKE '%{protocolo}%'"
@@ -349,7 +349,7 @@ def os_index(request):
     ordens_de_servico = paginator.get_page(page)
 
     context = {
-        'titulo': apps.get_app_config('iluminacao').verbose_name,
+        'titulo': apps.get_app_config('os_ti').verbose_name,
         'ordens_de_servico': ordens_de_servico,
         'tipo_os': Tipo_OS.objects.all(),
         'protocolo': protocolo,
@@ -367,7 +367,7 @@ def os_index(request):
         'dt_alteracao2': dt_alteracao2,
     }
 
-    return render(request, 'iluminacao/index.html', context)
+    return render(request, 'os_ti/index.html', context)
 
 
 
@@ -426,7 +426,7 @@ def os_finalizados(request):
         dt_alteracao2 = request.session.get('dt_alteracao2_f', '')
     try:
         # Construa a consulta personalizada
-        sql = "SELECT * FROM iluminacao_ordemdeservico WHERE status = 'f'"
+        sql = "SELECT * FROM os_ti_ordemdeservico WHERE status = 'f'"
 
         if protocolo:
             sql += f" AND numero LIKE '%{protocolo}%'"
@@ -489,7 +489,7 @@ def os_finalizados(request):
     ordens_de_servico = paginator.get_page(page)
 
     context = {
-        'titulo': apps.get_app_config('iluminacao').verbose_name,
+        'titulo': apps.get_app_config('os_ti').verbose_name,
         'ordens_de_servico': ordens_de_servico,
         'tipo_os': Tipo_OS.objects.all(),
         'protocolo': protocolo,
@@ -506,12 +506,12 @@ def os_finalizados(request):
         'dt_alteracao2': dt_alteracao2,
     }
 
-    return render(request, 'iluminacao/finalizados.html', context)
+    return render(request, 'os_ti/finalizados.html', context)
 
 @login_required
 def add_os(request):
     
-    form = OS_Form(initial={'tipo': Tipo_OS.objects.get(sigla='IP').id})
+    form = OS_Form(initial={'tipo': Tipo_OS.objects.get(sigla='MAN').id})
 
     if request.method=='POST':
         form=OS_Form(request.POST)
@@ -525,11 +525,11 @@ def add_os(request):
             return redirect('os_ti:os_index')                
 
     context={
-        'titulo': apps.get_app_config('iluminacao').verbose_name,
+        'titulo': apps.get_app_config('os_ti').verbose_name,
         'form': form,
     }
 
-    return render(request, 'iluminacao/adicionar_os.html', context)
+    return render(request, 'os_ti/adicionar_os.html', context)
 
 @login_required
 @group_required('os_acesso')
@@ -562,11 +562,11 @@ def detalhes_os(request, id):
         'linha_tempo': linha_tempo,
         'STATUS': STATUS_CHOICES,
         'PRIORIDADES': PRIORIDADE_CHOICES, 
-        'titulo': apps.get_app_config('iluminacao').verbose_name,
+        'titulo': apps.get_app_config('os_ti').verbose_name,
         'os': os,
         'os_ext': os_ext
     }
-    return render(request, 'iluminacao/detalhes_os.html', context)
+    return render(request, 'os_ti/detalhes_os.html', context)
 
 @login_required
 @group_required('os_acesso')
@@ -601,7 +601,7 @@ def atender_os(request, id):
 def funcionarios_listar(request):
     funcionarios=Funcionario_OS.objects.all()
     context={
-        'titulo': apps.get_app_config('iluminacao').verbose_name,
+        'titulo': apps.get_app_config('os_ti').verbose_name,
         'funcionarios': funcionarios
     }
     return render(request, 'equipe/funcionarios.html', context)
@@ -620,7 +620,7 @@ def funcionario_cadastrar(request):
     else:
         form=Funcionario_Form(initial={'tipo_os': Tipo_OS.objects.get(sigla='IP')})
     context={
-        'titulo': apps.get_app_config('iluminacao').verbose_name,
+        'titulo': apps.get_app_config('os_ti').verbose_name,
         'form': form
     }
     return render(request, 'equipe/funcionarios_cadastrar.html', context)
@@ -636,7 +636,7 @@ def funcionario_editar(request, id):
             form.save()
             return redirect('funcionarios')
     context={
-        'titulo': apps.get_app_config('iluminacao').verbose_name,
+        'titulo': apps.get_app_config('os_ti').verbose_name,
         'form': form,
         'funcionario': funcionario
     }     
@@ -669,10 +669,10 @@ def atribuir_equipe(request, id):
             form.save()
             return redirect('os_ti:detalhes_os', id)
     context={
-            'titulo': apps.get_app_config('iluminacao').verbose_name,   
+            'titulo': apps.get_app_config('os_ti').verbose_name,   
             'form':form,
         }
-    return render(request, 'iluminacao/adicionar_ext.html', context)
+    return render(request, 'os_ti/adicionar_ext.html', context)
 
 @login_required
 @group_required('os_acesso')
@@ -693,10 +693,10 @@ def pontos_os(request, id):
             instancia.dt_execucao = instancia.dt_execucao.strftime('%Y-%m-%d')
         form = OS_Form_Ponto(instance=instancia)
     context={
-            'titulo': apps.get_app_config('iluminacao').verbose_name,   
+            'titulo': apps.get_app_config('os_ti').verbose_name,   
             'form':form,
         }
-    return render(request, 'iluminacao/adicionar_ext.html', context)
+    return render(request, 'os_ti/adicionar_ext.html', context)
 
 from django.db.models import Count
 
@@ -707,7 +707,7 @@ def imprimir_os(request, id):
     context={
         'lista_de_os': lista_de_os
     }
-    return render(request, 'iluminacao/imprimir_os.html', context)
+    return render(request, 'os_ti/imprimir_os.html', context)
 
 @login_required
 @group_required('os_acesso')
@@ -722,7 +722,7 @@ def imprimir_varias_os(request, ids):
     context={
         'lista_de_os': lista_de_os
     }
-    return render(request, 'iluminacao/imprimir_os.html', context)
+    return render(request, 'os_ti/imprimir_os.html', context)
 
 @login_required
 @group_required('os_acesso')
@@ -766,7 +766,7 @@ def graficos(request):
             SUM(CASE WHEN status = 'f' THEN 1 ELSE 0 END) AS total_finalizadas,
             SUM(CASE WHEN status <> 'f' THEN 1 ELSE 0 END) AS total_nao_finalizadas
         FROM
-            iluminacao_ordemdeservico
+            os_ti_ordemdeservico
         WHERE
             dt_solicitacao >= %s
         GROUP BY
@@ -799,10 +799,10 @@ def graficos(request):
         'pontos_por_funcionario': pontos_por_funcionario,
         'os_finalizadas_por_tipo': os_finalizadas_por_tipo,
         'os_nao_finalizadas_por_tipo': os_nao_finalizadas_por_tipo,
-        'titulo': apps.get_app_config('iluminacao').verbose_name,
+        'titulo': apps.get_app_config('os_ti').verbose_name,
         'servicos_grafico_linha_dados': servicos_grafico_linha_dados
     }
-    return render(request, 'iluminacao/graficos.html', context)
+    return render(request, 'os_ti/graficos.html', context)
 
 
 @login_required
@@ -810,7 +810,7 @@ def graficos(request):
 def graficos_ver_mais(request, tipo, subtipo):
     context = {
         'tipo': tipo,
-        'titulo': apps.get_app_config('iluminacao').verbose_name,
+        'titulo': apps.get_app_config('os_ti').verbose_name,
     }
     workbook = Workbook()
     if tipo == 'pontos-por-bairro':
@@ -869,7 +869,7 @@ def graficos_ver_mais(request, tipo, subtipo):
     else:
         return redirect('os_ti:kpi')
     if subtipo=='imprimir':
-        return render(request, 'iluminacao/graficos_ver_mais_imprimir.html', context)
+        return render(request, 'os_ti/graficos_ver_mais_imprimir.html', context)
     elif subtipo=='download':
         data_atual = datetime.now()
         data_formatada = data_atual.strftime("%d-%m-%y")
@@ -877,7 +877,7 @@ def graficos_ver_mais(request, tipo, subtipo):
         response['Content-Disposition'] = f'attachment; filename={tipo}-{data_formatada}.xlsx'        
         workbook.save(response)
         return response
-    return render(request, 'iluminacao/graficos_ver_mais.html', context)
+    return render(request, 'os_ti/graficos_ver_mais.html', context)
 
 @login_required
 @group_required('os_acesso')
@@ -943,7 +943,7 @@ def contagem_os(request):
         'total_os_mes': total_os_mes_ano
     }
 
-    return render(request, 'iluminacao/contagem_os.html', context)
+    return render(request, 'os_ti/contagem_os.html', context)
 
 
 

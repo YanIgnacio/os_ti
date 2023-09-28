@@ -1,4 +1,4 @@
-{% extends 'template.html' %}
+{% extends 'os_template.html' %}
 {% load bootstrap5 %}
 {% load static%}
 {% load custom_filters %}
@@ -25,7 +25,7 @@
                           <a href="#" onclick="imprimir()" class="btn btn-dark ms-2 my-auto">
                             <i class="fa-solid fa-print"></i>
                           </a> 
-                          <a href="{% url 'iluminacao:os_finalizados' %}" class="text-capitalize btn ms-2 btn-secondary my-auto">
+                          <a href="{% url 'os_ti:os_finalizados' %}" class="text-capitalize btn ms-2 btn-secondary my-auto">
                             <i class="fa-solid fa-box-archive me-2"></i>Finalizados
                           </a>                        
                         </div>
@@ -132,7 +132,7 @@
                                   <input onchange="checkClick(this)" type="checkbox" name="checkbox-{{os.id}}" class="checkbox-ids" data-id="{{os.id}}">
                                 </td>                                
                                 <td>
-                                  <a  href="{% url 'iluminacao:detalhes_os' os.id %}" class="w-100 my-auto py-1 btn {% if os.prioridade == '0'%} btn-success {% elif os.prioridade == '1' %} btn-warning {% elif os.prioridade == '2' %} btn-danger{% endif %}">
+                                  <a  href="{% url 'os_ti:detalhes_os' os.id %}" class="w-100 my-auto py-1 btn {% if os.prioridade == '0'%} btn-success {% elif os.prioridade == '1' %} btn-warning {% elif os.prioridade == '2' %} btn-danger{% endif %}">
                                     {{os.get_prioridade_display}}
                                   </a>
                                 </td>
@@ -156,12 +156,12 @@
                                 </td>
                                 <td>{{os.id|qntMsg|safe}}</td>
                                 <td>
-                                  <a href="{% url 'iluminacao:detalhes_os' os.id %}" class="w-100 ms-auto my-auto py-1 px-4 text-capitalize btn {% if os.status == '0'%} btn-info text-white {% elif os.status == '1' %} btn-warning {% elif os.status == '2' %} btn-danger{% elif os.status == 'f' %} btn-dark {% endif %} px-2 py-0">
+                                  <a href="{% url 'os_ti:detalhes_os' os.id %}" class="w-100 ms-auto my-auto py-1 px-4 text-capitalize btn {% if os.status == '0'%} btn-info text-white {% elif os.status == '1' %} btn-warning {% elif os.status == '2' %} btn-danger{% elif os.status == 'f' %} btn-dark {% endif %} px-2 py-0">
                                     {{os.get_status_display}}
                                   </a>
                                 </td>
                                 <td>
-                                  <a href="{% url 'iluminacao:detalhes_os' os.id %}" style="text-decoration: none;">
+                                  <a href="{% url 'os_ti:detalhes_os' os.id %}" style="text-decoration: none;">
                                     <i class="fa-solid fa-eye"></i>
                                   </a>
                                 </td>
@@ -232,7 +232,7 @@
       ids=ids+element+'-'
     });
     console.log(ids)
-    window.location.assign("/servicos/iluminacao/imprimir/"+ids);
+    window.location.assign("/servicos/os_ti/imprimir/"+ids);
   }
   function showFiltros(){
     if (openfiltros){      
