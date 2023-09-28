@@ -348,6 +348,10 @@ def os_index(request):
     page = request.GET.get('page', 1)
     ordens_de_servico = paginator.get_page(page)
 
+    if ordens_de_servico.has_other_pages():
+        primeiro_elemento = ordens_de_servico[0]
+        print(primeiro_elemento)
+
     context = {
         'titulo': apps.get_app_config('os_ti').verbose_name,
         'ordens_de_servico': ordens_de_servico,
@@ -366,6 +370,7 @@ def os_index(request):
         'dt_alteracao1': dt_alteracao1,
         'dt_alteracao2': dt_alteracao2,
     }
+
 
     return render(request, 'os_ti/index.html', context)
 

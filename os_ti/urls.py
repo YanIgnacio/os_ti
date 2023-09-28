@@ -19,7 +19,7 @@ urlpatterns = [
     path('imprimir/<ids>/', views.imprimir_varias_os, name='imprimir_varias'),
     path('os/painel/<id>/imprimir/', views.imprimir_os, name='imprimir'),
     path('os/painel/<id>/alterar_status/<opcao>', views.change_status_os, name='change_status_os'),
-    path('os/painel/<id>/alterar_prioridade/<opcao>', views.change_prioridade_os, name='change_prioridade_os'),
+    path('os/painel/<int:id>/alterar_prioridade/<int:opcao>', views.change_prioridade_os, name='change_prioridade_os'),
     path('os/painel/<id>/atender', views.atender_os, name='atender_os'),
 
     path('os/kpi', views.graficos, name='kpi'),

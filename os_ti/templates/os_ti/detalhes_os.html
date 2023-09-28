@@ -1,4 +1,4 @@
-{% extends 'template.html' %}
+{% extends 'os_template.html' %}
 {% load bootstrap5 %}
 {% load static %}
 {% load custom_filters %}
@@ -33,7 +33,7 @@
                                   {% for prioridade in PRIORIDADES %}
                                   {% if not os.prioridade == prioridade.0 %}
                                   <li>
-                                    <a class="dropdown-item {% if prioridade.0 == '0'%} bg-success text-white {% elif prioridade.0 == '1' %} bg-warning   {% elif prioridade.0  == '2' %} bg-danger text-white {% endif %}" href="{% url 'iluminacao:change_prioridade_os' id=os.id opcao=prioridade.0 %}"> 
+                                    <a class="dropdown-item {% if prioridade.0 == '0'%} bg-success text-white {% elif prioridade.0 == '1' %} bg-warning   {% elif prioridade.0  == '2' %} bg-danger text-white {% endif %}" href="{% url 'os/painel:change_prioridade_os' id=os.id opcao=prioridade.0 %}">
                                       <i class="fa-solid fa-hand-point-right me-4"></i>{{prioridade.1}}
                                     </a>
                                   </li>
