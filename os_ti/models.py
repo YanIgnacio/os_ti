@@ -205,6 +205,7 @@ class OrdemDeServico(models.Model):
         self.dt_conclusao = timezone.now()
         self.save()
         return "Chamado finalizado com sucesso."
+    
 
 class OS_ext(models.Model):    
     os=models.ForeignKey(OrdemDeServico, on_delete=models.PROTECT)

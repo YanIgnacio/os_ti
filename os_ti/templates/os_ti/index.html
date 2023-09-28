@@ -136,12 +136,12 @@
                                     {{os.get_prioridade_display}}
                                   </a>
                                 </td>
-                                <td class="text-center">{{os.tipo.sigla}}</td>                                
+                                <td class="text-center">{{ordens_de_servico.tipo.sigla}}</td>                                
                                 <td class="text-center">
                                   {% if os.numero %}
                                   {{os.numero}}
                                   {% else %}
-                                  {{os.gerar_protocolo}}
+                                  {{ordens_de_servico.gerar_protocolo}}
                                   {% endif %}
                                 </td>
                                 <td class="text-center">{{os.dt_solicitacao|date:"d/m/Y - H:i"}}</td> 
