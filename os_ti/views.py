@@ -573,6 +573,7 @@ def detalhes_os(request, id):
         'os': os,
         'os_ext': os_ext
     }
+    print(os.atendente)
     return render(request, 'os_ti/detalhes_os.html', context)
 
 @login_required

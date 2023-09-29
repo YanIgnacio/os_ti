@@ -6,7 +6,7 @@
 {% include 'nav_os.html' %}
 {% endblock %}
 {% block css %}
-<link rel="stylesheet" href="{% static 'css/almoxarifado.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 {% endblock %}
 {% block os %}fw-bolder{% endblock %}
 {% block main %}
@@ -45,7 +45,7 @@
                             <div class="col d-flex">                              
                               {% if os.atendente %}
                               <span class="ms-auto mt-3  mb-auto btn btn-secondary py-1">
-                              {{os.atendente.first_name}}
+                              {{os.atendente}}
                               </span>
                               {% else %}
                               <a href="{% url 'os_ti:atender_os' os.id %}" class="ms-auto mt-3 mb-auto btn btn-secondary py-1">

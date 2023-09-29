@@ -220,10 +220,12 @@
   let openfiltros = false
   document.getElementById('os_index').classList.add('s-nav-active');  
 
-  var listaServicos=[]
+
   function checkClick(e){
+    let listaServicos = []
     if(e.checked){
       listaServicos.push(e.dataset.id)
+      console.log('ta checando')
     }else{
       listaServicos.pop(e.dataset.id)
     }    

@@ -1,4 +1,4 @@
-{% extends 'template.html' %}
+{% extends 'os_template.html' %}
 {% load bootstrap5 %}
 {% load static%}
 {% block nav %}
@@ -30,7 +30,7 @@
                           <h4>
                             Lista de funcionários
                           </h4>
-                          <a href="{% url 'iluminacao:cadastrar funcionario' %}" class="btn btn-primary">Adicionar</a>
+                          <a href="{% url 'os_ti:cadastrar funcionario' %}" class="btn btn-primary">Adicionar</a>
                         </div>
                           <table class="table">
                             <thead>
@@ -47,7 +47,7 @@
                                 <td>{{f.pessoa.nome}}</td>                                
                                 <td>{{f.pessoa.telefone}}</td>
                                 <td>{{f.pessoa.cpf}}</td>
-                                <td><a href="{% url 'iluminacao:editar funcionario' f.id %}"><i class="fa-solid fa-pen-to-square"></i></a></td>
+                                <td><a href="{% url 'os_ti:editar funcionario' f.id %}"><i class="fa-solid fa-pen-to-square"></i></a></td>
                               </tr>
                               {% endfor %}
                             </tbody>
