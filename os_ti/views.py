@@ -573,7 +573,7 @@ def detalhes_os(request, id):
         'os': os,
         'os_ext': os_ext
     }
-    print(os.atendente)
+    print(os.dt_conclusao)
     return render(request, 'os_ti/detalhes_os.html', context)
 
 @login_required
@@ -601,6 +601,7 @@ def change_prioridade_os(request, id, opcao):
 def atender_os(request, id):
     os=OrdemDeServico.objects.get(id=id)
     os.atendente=request.user
+    os.dt_execucao=datetime.now()
     os.save()
     return redirect('os_ti:detalhes_os', id=id)
 

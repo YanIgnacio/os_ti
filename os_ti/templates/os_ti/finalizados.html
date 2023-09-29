@@ -147,14 +147,14 @@
                                 <td>{{os.bairro}}</td>                                
                                 <td>
                                   {% if os.atendente %}
-                                  {{os.atendente.first_name}}
+                                  {{os.atendente}}
                                   {% else %}
                                   <span class="text-secondary">n/h</span>
                                   {% endif %}
                                 </td>
                                 <td>
                                   {% if os.finalizado_por %}
-                                  {{os.finalizado_por.first_name}}
+                                  {{os.finalizado_por}}
                                   {% else %}
                                   <span class="text-secondary">n/h</span>
                                   {% endif %}
