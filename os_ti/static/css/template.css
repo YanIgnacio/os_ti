@@ -50,6 +50,10 @@ input{
   color: black;
   font-family: 'Roboto Condensed', sans-serif;
 }
+
+.nav-link:hover{
+  color: #547DCD !important
+}
 .bg-black{
   background-color: black;
   color: white;
