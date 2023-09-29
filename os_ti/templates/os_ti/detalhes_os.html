@@ -33,7 +33,7 @@
                                   {% for prioridade in PRIORIDADES %}
                                   {% if not os.prioridade == prioridade.0 %}
                                   <li>
-                                    <a class="dropdown-item {% if prioridade.0 == '0'%} bg-success text-white {% elif prioridade.0 == '1' %} bg-warning   {% elif prioridade.0  == '2' %} bg-danger text-white {% endif %}" href="{% url 'os/painel:change_prioridade_os' id=os.id opcao=prioridade.0 %}">
+                                    <a class="dropdown-item {% if prioridade.0 == '0'%} bg-success text-white {% elif prioridade.0 == '1' %} bg-warning   {% elif prioridade.0  == '2' %} bg-danger text-white {% endif %}" href="{% url 'os_ti:change_prioridade_os' id=os.id opcao=prioridade.0 %}">
                                       <i class="fa-solid fa-hand-point-right me-4"></i>{{prioridade.1}}
                                     </a>
                                   </li>
@@ -48,7 +48,7 @@
                               {{os.atendente.first_name}}
                               </span>
                               {% else %}
-                              <a href="{% url 'iluminacao:atender_os' os.id %}" class="ms-auto mt-3 mb-auto btn btn-secondary py-1">
+                              <a href="{% url 'os_ti:atender_os' os.id %}" class="ms-auto mt-3 mb-auto btn btn-secondary py-1">
                                 Atender chamado
                               </a>
                               {% endif %}
@@ -60,7 +60,7 @@
                                   {% for status in STATUS %}
                                   {% if not os.status == status.0 %}
                                   <li>
-                                    <a class="dropdown-item {% if status.0 == '0'%} bg-info text-white {% elif status.0 == '1' %} bg-warning   {% elif status.0  == '2' %} bg-danger text-white {% elif status.0  == 'f' %} bg-dark text-white{% endif %}" href="{% url 'iluminacao:change_status_os' id=os.id opcao=status.0 %}">
+                                    <a class="dropdown-item {% if status.0 == '0'%} bg-info text-white {% elif status.0 == '1' %} bg-warning   {% elif status.0  == '2' %} bg-danger text-white {% elif status.0  == 'f' %} bg-dark text-white{% endif %}" href="{% url 'os_ti:change_status_os' id=os.id opcao=status.0 %}">
                                       <i class="fa-solid fa-hand-point-right me-4"></i>{{status.1}}
                                     </a>
                                   </li>
@@ -68,7 +68,7 @@
                                   {% endfor %}
                                 </ul>
                               </div> 
-                              <a href="{% url 'iluminacao:imprimir' os.id %}" target="_blank" class="btn btn-dark mt-3 mb-auto py-1 ms-2">
+                              <a href="{% url 'os_ti:imprimir' os.id %}" target="_blank" class="btn btn-dark mt-3 mb-auto py-1 ms-2">
                                 <i class="fa-solid fa-print"></i>
                               </a>                             
                             </div>
@@ -135,15 +135,15 @@
                               </div>    
                               <div class="border  py-4 px-4 mt-3">
                                 <p class="d-flex me-2"><b class="me-auto">Atribuir</b></p>                                
-                                <a class="btn btn-primary" href="{% url 'iluminacao:pontos_os' os.id %}">Qnt. Pontos e dt. execução</a>                              
+                                <a class="btn btn-primary" href="{% url 'os_ti:pontos_os' os.id %}">Qnt. Pontos e dt. execução</a>                              
                                 {% if os_ext.equipe %}                                
-                                <a href="{% url 'iluminacao:atribuir equipe' os.id %}" tabindex="0" class="popoverbutton btn btn-md btn-primary" role="button" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-trigger="hover focus" title="Equipe" data-bs-content="{% for e in os_ext.equipe.all %}{{e}}{% if not forloop.last %}{% if forloop.revcounter == 1 %} | {% else %} | {% endif %}{% endif %} {% endfor %}">Equipe</a>                                
+                                <a href="{% url 'os_ti:atribuir equipe' os.id %}" tabindex="0" class="popoverbutton btn btn-md btn-primary" role="button" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-trigger="hover focus" title="Equipe" data-bs-content="{% for e in os_ext.equipe.all %}{{e}}{% if not forloop.last %}{% if forloop.revcounter == 1 %} | {% else %} | {% endif %}{% endif %} {% endfor %}">Equipe</a>                                
 
                                 {% else %}
-                                <a class="btn btn-primary" href="{% url 'iluminacao:atribuir equipe' os.id %}">Equipe</a>
+                                <a class="btn btn-primary" href="{% url 'os_ti:atribuir equipe' os.id %}">Equipe</a>
                                 {% endif %}
                                 
-                                <a class="btn btn-primary mt-2 {% if not os.status == 'f' %}disabled{% endif %}" href="{% url 'almoxarifado:alm_remover_material_do_estoque' os.id %}">Equipamentos utilizados</a>
+                                {% comment %} <a class="btn btn-primary mt-2 {% if not os.status == 'f' %}disabled{% endif %}" href="{% url 'almoxarifado:alm_remover_material_do_estoque' os.id %}">Equipamentos utilizados</a> {% endcomment %}
 
                               </div>                              
                             </div>

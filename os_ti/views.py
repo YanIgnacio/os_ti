@@ -312,6 +312,8 @@ def os_index(request):
         with connection.cursor() as cursor:
             cursor.execute(sql)
             results = cursor.fetchall()
+        
+        print(results)
 
         # Processar os resultados
         queryset = []
@@ -325,18 +327,18 @@ def os_index(request):
                 'logradouro': row[4],
                 'bairro': row[5],
                 'referencia': row[6],
-                'motivo_reclamacao': row[7],
-                'status': row[8],
-                'dt_conclusao': row[9],
-                'atendente_id': row[10],
-                'cadastrado_por_id': row[11],
-                'tipo_id': row[12],
-                'pontos_atendidos': row[13],
-                'nome_do_contribuinte': row[14],
-                'telefone_do_contribuinte': row[15],
-                'dt_alteracao': row[16],
-                'dt_execucao': row[17],
-                'observacao_pontos': row[18]
+                'nome_do_contribuinte': row[7],
+                'telefone_do_contribuinte': row[8],
+                'motivo_reclamacao': row[9],
+                'status': row[10],
+                'pontos_atendidos': row[11],
+                'observacao_pontos': row[12],
+                'dt_alteracao': row[13],
+                'dt_execucao': row[14],
+                'dt_conclusao': row[15],
+                'atendente_id': row[17],
+                'cadastrado_por_id': row[18],
+                'tipo_id': row[20],
                 # Mapear os demais campos conforme necessário
             }
             ordem_de_servico = OrdemDeServico(**data)
