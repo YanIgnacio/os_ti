@@ -964,7 +964,7 @@ def contagem_os(request):
 
 def loginPage(request):
     if request.user.is_authenticated:
-        return redirect('')
+        return redirect('os_ti:os_index')
     else:
         if request.method == 'POST':
             form = AuthenticationForm(request, data=request.POST)
@@ -974,13 +974,13 @@ def loginPage(request):
                 user = authenticate(username=username, password=password)
                 if user is not None:        
                     login(request, user)
-                    return redirect('')
+                    return redirect('os_ti:os_index')
         else:
             form = AuthenticationForm(request)
             
         return render(request, 'login.html', {'form': form})
     
-def logoutFunc(request):
-    logout(request.user)
-    redirect('loginPage')
+def sairFunc(request):
+    logout(request)
+    return redirect('/login/')
     
