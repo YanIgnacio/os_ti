@@ -29,5 +29,9 @@ urlpatterns = [
     path('funcionario/editar/<id>/', views.funcionario_editar, name='editar funcionario'),
     path('funcionario/deletar/<id>/', views.funcionario_deletar, name='deletar funcionario'),
 
-    path('os/painel/<id>/equipe/', views.atribuir_equipe, name='atribuir equipe')
+    path('os/painel/<id>/equipe/', views.atribuir_equipe, name='atribuir equipe'),
+    
+    #acrescentados
+    path('login/', views.loginPage, name='loginPage'),
+    path('logoutFunc/', views.logoutFunc, name='logoutFunc'),
 ]

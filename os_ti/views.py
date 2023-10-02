@@ -16,6 +16,10 @@ from datetime import datetime, timedelta
 from django.utils import timezone
 from .custom import month_translate
 
+#acrescentados
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import login, authenticate, logout
+
 STATUS_CHOICES=(
         ('0','Novo'),
         ('1','Aguardando'),
@@ -956,3 +960,27 @@ def contagem_os(request):
 
 
 
+#acrescentados
+
+def loginPage(request):
+    if request.user.is_authenticated:
+        return redirect('')
+    else:
+        if request.method == 'POST':
+            form = AuthenticationForm(request, data=request.POST)
+            if form.is_valid():
+                username = form.cleaned_data.get('username')
+                password = form.cleaned_data.get('password')
+                user = authenticate(username=username, password=password)
+                if user is not None:        
+                    login(request, user)
+                    return redirect('')
+        else:
+            form = AuthenticationForm(request)
+            
+        return render(request, 'login.html', {'form': form})
+    
+def logoutFunc(request):
+    logout(request.user)
+    redirect('loginPage')
+    

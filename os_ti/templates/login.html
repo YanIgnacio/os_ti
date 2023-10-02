@@ -1,0 +1,45 @@
+{% extends 'os_template.html' %}
+{% block subtitulo %}
+- Login
+{% endblock %}
+{% block main %}
+    <div id="login-box">
+        <image src="/static/img/prefeitura.png" id="img-login">
+            <h1 class="title-login">MOC</h1>
+            <h2 class="title-login">Memorando / Ofício / Circular</h2>
+            <hr id="hr-login">
+            <form method="post">
+                {% csrf_token %}
+                <div id="input-container-login">
+                    {{ form.as_p }}
+                </div>
+                {% if message_success%}
+                <p id="mensagem_sucesso">{{ message_success }}</p>
+                {% endif %}
+                <div id="botoes_login">
+                    <button id="button-submit-login" type="submit" class="btn btn-primary">Entrar</button>
+                    <button class="btn btn-primary" id="cadastro-login" type="button">Quero me cadastrar</button>
+                </div>
+            </form>
+
+            <div id="modal-login" style="display: none;">
+                <div class="modal-content-login">
+                    <span class="fechar">&times;</span>
+                    <p style="font-size: 17px; text-align: center;">
+                        Para realizar o cadastro, abra um chamado, ou ligue para a Subsecretaria de T.I <br />
+                        <b>Ramal: (9268)</b>
+                    </p>
+                    <div class="button-container">
+                        <button type="button" id="ok-modal" class="btn btn-dark btn-sm">Ok</button>
+                    </div>
+                </div>
+            </div>
+
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+                crossorigin="anonymous"></script>
+            <script src="/static/js/login.js"></script>
+        </image>
+    </div>
+
+{% endblock %}
