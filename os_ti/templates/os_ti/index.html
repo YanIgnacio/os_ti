@@ -24,9 +24,9 @@
                           <button onclick="showFiltros()" class="btn btn-dark ms-auto my-auto">
                             <i class="fa-solid fa-filter"></i>
                           </button>                          
-                          <!-- <a href="#" onclick="imprimir()" class="btn btn-dark ms-2 my-auto">
+                          <a href="#" onclick="imprimir()" class="btn btn-dark ms-2 my-auto">
                             <i class="fa-solid fa-print"></i>
-                          </a>  -->
+                          </a> 
                           <a href="{% url 'os_ti:os_finalizados' %}" class="text-capitalize btn ms-2 btn-secondary my-auto">
                             <i class="fa-solid fa-box-archive me-2"></i>Finalizados
                           </a>                        
@@ -219,10 +219,9 @@
 <script>
   let openfiltros = false
   document.getElementById('os_index').classList.add('s-nav-active');  
-
+  var listaServicos = []
 
   function checkClick(e){
-    let listaServicos = []
     if(e.checked){
       listaServicos.push(e.dataset.id)
       console.log('ta checando')
