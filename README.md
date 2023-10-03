@@ -1,7 +1,7 @@
 
-# Order of Service
+# Service Order
 
-This project is a calling system. Therefore, its functionality is restricted to internal applications of the PMNF (Nova Friburgo City Hall)
+This project is a service order. Therefore, its functionality is restricted to internal applications of the PMNF (Nova Friburgo City Hall)
 
 ## Authors
 
@@ -13,4 +13,4 @@ This project is a calling system. Therefore, its functionality is restricted to 
 ## Appendix
 
 Project initially started by
-- [@salari-e](https://www.github.com/salarini-e)
+- [@salarini-e](https://www.github.com/salarini-e)
