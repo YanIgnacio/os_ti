@@ -34,4 +34,5 @@ urlpatterns = [
     #acrescentados
     path('login/', views.loginPage, name='loginPage'),
     path('sairFunc/', views.sairFunc, name='sairFunc'),
+    path('cadastroPessoa/', views.cadastroPessoa, name='cadastroPessoa'),
 ]

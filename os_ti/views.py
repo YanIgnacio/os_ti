@@ -631,7 +631,7 @@ def funcionario_cadastrar(request):
         # else:
             # print(form.errors)
     else:
-        form=Funcionario_Form(initial={'tipo_os': Tipo_OS.objects.get(sigla='IP')})
+        form=Funcionario_Form(initial={'tipo_os': Tipo_OS.objects.get(sigla='MAN')})
     context={
         'titulo': apps.get_app_config('os_ti').verbose_name,
         'form': form
@@ -979,8 +979,19 @@ def loginPage(request):
             form = AuthenticationForm(request)
             
         return render(request, 'login.html', {'form': form})
-    
+
+@login_required
 def sairFunc(request):
     logout(request)
     return redirect('/login/')
+
+def cadastroPessoa(request):
+    if request.method == 'POST':
+        form = CadastroForm(data=request.POST)
+        print('sou post')
+    else:
+        form = CadastroForm()
+    
+    return render(request, 'cadastro.html', {'form': form})
+    
     

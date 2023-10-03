@@ -78,3 +78,28 @@ class NovaMensagemForm(forms.ModelForm):
             'mensagem': forms.Textarea(attrs={'class': 'form-control h-100', 'rows': 6}),
             'anexo': forms.ClearableFileInput(attrs={'class': 'form-control-file'}),
         }
+        
+#acrescentado
+class CadastroForm(ModelForm):
+    class Meta:
+        model = Pessoa
+        widgets = {
+            'dt_nascimento':forms.TextInput(attrs={'type':'date'}),
+            'cpf':forms.TextInput(attrs={'onkeydown': 'mascara(this, icpf)','onblur':'checkCPF(this.value)'}),
+            'cep':forms.TextInput(attrs={'onkeydown': 'icep(this)','onblur':'getCEP(this)'}),
+            'telefone':forms.TextInput(attrs={'onkeydown':'mascara(this, itel)'}),
+        }
+        fields=['cpf','nome', 'email', 'telefone', 'dt_nascimento', 'cep','bairro', 'endereco', 'numero', 'complemento', 'possui_cnpj']
+        exclude = ['user']
+
+    # def clean_cpf(self):
+    #     cpf = validate_cpf(self.cleaned_data["cpf"])
+    #     return cpf
+
+    def clean_telefone(self):
+        telefone = self.cleaned_data["telefone"]
+        telefone = telefone.replace('(', '')
+        telefone = telefone.replace(' ', '')
+        telefone = telefone.replace(')', '')
+        telefone = telefone.replace('-', '')
+        return telefone
