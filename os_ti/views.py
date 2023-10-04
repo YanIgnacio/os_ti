@@ -19,6 +19,7 @@ from .custom import month_translate
 #acrescentados
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, authenticate, logout
+from django.contrib import messages
 
 STATUS_CHOICES=(
         ('0','Novo'),
@@ -986,12 +987,78 @@ def sairFunc(request):
     return redirect('/login/')
 
 def cadastroPessoa(request):
-    if request.method == 'POST':
-        form = CadastroForm(data=request.POST)
-        print('sou post')
-    else:
-        form = CadastroForm()
     
-    return render(request, 'cadastro.html', {'form': form})
+    form_pessoa = ''
+    pessoa = ''
+    is_user = False
+
+    if request.user.is_authenticated:
+        is_user = True
+
+        try:
+            pessoa = Pessoa.objects.get(user=request.user)
+            form_pessoa = CadastroForm(initial={'email': request.user.email}, instance=pessoa)
+            
+        except Exception as e:
+            form_pessoa = CadastroForm(initial={'email': request.user.email})
+    else:
+        form_pessoa = CadastroForm()
+
+    if request.method == "POST":
+        if pessoa:
+            form_pessoa = CadastroForm(request.POST, instance=pessoa)
+        else:
+            form_pessoa = CadastroForm(request.POST)
+
+        if form_pessoa.is_valid():
+
+            # com o objetivo de diminuir a identação, e não sendo possível utilizar guard clauses, optei em 
+            # verificar o is_user duas vezes
+            if is_user or request.POST['password'] == request.POST['password2']:
+                if is_user or len(request.POST['password']) >= 8:
+                    try:
+                        user = ''
+
+                        if is_user:
+                            user = User.objects.get(id=request.user.id)
+                            user.email = request.POST['email']
+                            user.save()
+                        else:
+                            user = User.objects.create_user(
+                                username=request.POST['email'], email=request.POST['email'], password=request.POST['password'])
+                            user.first_name = request.POST['nome']
+                            user.save()
+
+                        pessoa = form_pessoa.save(commit=False)
+                        pessoa.user = user
+
+                        pessoa.save()
+                        messages.success(request, 'Usuário cadastrado com sucesso!')
+                        user = authenticate(request, username=request.POST['email'], password=request.POST['password'])
+                        if user is not None:
+                                login(request, user)
+                                try:
+                                    return redirect(request.GET['next'])
+                                except:
+                                    return redirect('/')
+                        else:
+                                context = {
+                                    'error': True,
+                                }
+                    except Exception as e:
+                        messages.error(
+                            request, 'Email de usuário já cadastrado')
+                        
+                messages.error(
+                    request, 'A senha deve possuir pelo menos 8 caracteres')
+            else:
+                # as senhas não se coincidem
+                messages.error(request, 'As senhas digitadas não se coincidem')
+    context = {
+        'form_pessoa': form_pessoa,
+        'is_user': is_user
+    }    
+    
+    return render(request, 'cadastro.html', context)
     
     

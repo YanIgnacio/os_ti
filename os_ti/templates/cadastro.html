@@ -10,14 +10,29 @@
             <form method="post">
                 {% csrf_token %}
                 <div id="input-container-login">
-                    {{ form.as_p }}
+                    {{ form_pessoa.as_p }}
                 </div>
                 {% if message_success%}
                 <p id="mensagem_sucesso">{{ message_success }}</p>
                 {% endif %}
+
+                {% if not is_user %}
+                <div class="mb-3">
+                    <label class="mb-2 {% if error_senha.0 %}text-danger{% endif %}" for="senha">
+                        Senha:
+                    </label>
+                    <input required class="form-control" type="password" name="password" id="senha">
+                </div>
+                <div class="mb-3">
+                    <label class="mb-2 {% if error_senha.0 %}text-danger{% endif %}" for="senha2">
+                        Repita a senha:
+                    </label>
+                    <input required class="form-control" type="password" name="password2" id="senha2">
+                </div>
+                {% endif %}
+
                 <div id="botoes_login">
                     <button id="button-submit-login" type="submit" class="btn btn-primary">Entrar</button>
-                    <button class="btn btn-primary" id="cadastro-login" type="button"><a href="{% url 'os_ti:cadastroPessoa' %}">Quero me cadastrar</a></button>
                 </div>
             </form>
 
