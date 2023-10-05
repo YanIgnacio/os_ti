@@ -10,17 +10,27 @@ from django.utils import timezone
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+
+class Endereco(models.Model):
+    cep = models.CharField(max_length=9, verbose_name='CEP', default='')
+    referencia = models.CharField(max_length=200, verbose_name='Referência', blank=True)
+    bairro = models.CharField(max_length=150, verbose_name='Bairro')
+    logradouro = models.CharField(max_length=150, verbose_name='Logradouro')
+    numero = models.IntegerField(verbose_name='Numero', default=0)
+    
 class Secretaria(models.Model):
     nome = models.CharField(max_length=100, verbose_name='Nome')
-    cep = models.CharField(max_length=9, verbose_name='CEP', null=True)
-    bairro=models.CharField(max_length=64, verbose_name='Bairro', null=True)
-    endereco=models.CharField(max_length=128, verbose_name='Endereco', null=True)
-    numero=models.CharField(max_length=8, verbose_name='Número', null=True)
-    complemento=models.CharField(max_length=128, verbose_name='Complemento', blank=True, null=True)
+    
+    def __str__(self):
+        return self.nome
 
 class Setor(models.Model):
     nome = models.CharField(max_length=100, verbose_name='Nome')
     secretaria = models.ForeignKey(Secretaria, on_delete=models.CASCADE)
+    endereco = models.CharField(max_length=128, verbose_name='Endereco', null=True)
+    
+    def __str__(self):
+        return self.nome
     
 
 class Pessoa(models.Model):
@@ -34,11 +44,6 @@ class Pessoa(models.Model):
     telefone=models.CharField(max_length=15, verbose_name='Telefone', null=True)
     dt_nascimento=models.DateField(verbose_name='Data de nascimento', null=True)
     secretaria=models.CharField(max_length=100, verbose_name='Secretaria', default='')
-    # bairro=models.CharField(max_length=64, verbose_name='Bairro', null=True)
-    # endereco=models.CharField(max_length=128, verbose_name='Endereco', null=True)
-    # numero=models.CharField(max_length=8, verbose_name='Número', null=True)
-    # complemento=models.CharField(max_length=128, verbose_name='Complemento', blank=True, null=True)
-    # cep = models.CharField(max_length=9, verbose_name='CEP', null=True)
     dt_inclusao=models.DateField(auto_now_add=True, verbose_name='Data de inclusão')
 
 class Tipo_Material(models.Model):
@@ -66,23 +71,6 @@ class Material(models.Model):
     
     def __str__(self):
         return self.nome
-    
-
-class Bairro(models.Model):
-    nome = models.CharField(max_length=150, verbose_name='Bairro')
-
-
-class Logradouro(models.Model):
-    nome = models.CharField(max_length=150, verbose_name='Logradouro')
-
-
-class Endereco(models.Model):
-    referencia = models.CharField(
-        max_length=200, verbose_name='Referência', blank=True)
-    bairro = models.ForeignKey(
-        Bairro, verbose_name='Bairro', on_delete=models.PROTECT)
-    logradouro = models.ForeignKey(
-        Logradouro, verbose_name='Logradouro', on_delete=models.PROTECT)
 
 class Tipo_OS(models.Model):
     
@@ -150,8 +138,8 @@ class OrdemDeServico(models.Model):
 
     nome_do_contribuinte = models.CharField(max_length=200, verbose_name='Nome do contribuinte', blank=True)
     telefone_do_contribuinte = models.CharField(max_length=12, verbose_name='Telefone do contribuinte', blank=True)
-    secretaria = models.CharField(max_length=100, verbose_name='Secretaria', default='')
-    setor = models.CharField(max_length=100, verbose_name='Setor', default='')
+    secretaria = models.ForeignKey(Secretaria, verbose_name='Secretaria', on_delete=models.CASCADE)
+    setor = models.ForeignKey(Setor, verbose_name='Setor', on_delete=models.CASCADE)
 
     cadastrado_por = models.ForeignKey(Pessoa, on_delete=models.CASCADE, null=True)   
 
@@ -166,6 +154,7 @@ class OrdemDeServico(models.Model):
     dt_conclusao = models.DateTimeField(verbose_name='Data de conclusão', blank=True, null=True)
     message_status = models.CharField(max_length=1, verbose_name='Status de mensagens', default='0', choices=MESSAGE_STATUS_CHOICES, null=True)
     finalizado_por = models.ForeignKey(User, on_delete=models.PROTECT, blank=True, null=True, related_name='ordem_finalizada_por')
+    
     def semana_atendimento(self):
         return self.dt_conclusao.isocalendar()[1]
 
