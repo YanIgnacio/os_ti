@@ -10,6 +10,7 @@ class OS_Form(ModelForm):
         model = OrdemDeServico
         widgets = {
             'tipo': forms.Select(attrs={'readonly': True}),
+            'secretaria': forms.Select(),
         }
         exclude = ['numero', 'dt_inclusao', 'dt_alteracao','dt_execucao', 'observacao_pontos','atendente', 'dt_conclusao', 'prioridade', 'status', 'contribuinte', 'pontos_atendidos', 'cadastrado_por', 'message_status', 'finalizado_por']
 
