@@ -951,7 +951,6 @@ def contagem_os(request):
     # Obtém a contagem de OS por semana e ano
     total_os_semana_ano = TotalOSPorSemanaAno.objects.all()
 
-    # Obtém a contagem de OS por mês
     total_os_mes_ano = TotalOSPorMesAno.objects.all()
 
     context = {
