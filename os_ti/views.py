@@ -948,7 +948,6 @@ def salvar_contagem_os(request):
 @login_required
 @group_required('os_acesso')
 def contagem_os(request):
-    # Obtém a contagem de OS por semana e ano
     total_os_semana_ano = TotalOSPorSemanaAno.objects.all()
 
     total_os_mes_ano = TotalOSPorMesAno.objects.all()
