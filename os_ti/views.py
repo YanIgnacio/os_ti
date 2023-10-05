@@ -963,7 +963,6 @@ def contagem_os(request):
 
 
 
-#acrescentados
 
 def loginPage(request):
     if request.user.is_authenticated:
