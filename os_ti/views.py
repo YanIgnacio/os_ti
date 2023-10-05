@@ -40,7 +40,6 @@ def index(request):
 from django.db import connection
 
 @login_required
-@group_required('os_acesso')
 def os_painel(request):    
     # meses = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez']
     # bairros = OrdemDeServico.objects.values_list('bairro', flat=True).distinct()
@@ -233,12 +232,13 @@ def os_painel(request):
     return render(request, 'os_ti/painel.html', context)
 
 @login_required
-@group_required('os_acesso')
 def os_index(request):
-    if request.user.is_superuser:
+    if request.user.is_staff:
         queryset = OrdemDeServico.objects.all().exclude(status='f')
     else:
-        queryset = OrdemDeServico.objects.filter(atendente=request.user ).exclude(status='f')
+        pessoa = Pessoa.objects.get(user=request.user)
+        print(pessoa)
+        queryset = OrdemDeServico.objects.filter(cadastrado_por=pessoa).exclude(status='f')
 
     if request.method == 'POST':
         # Obtenha os parâmetros da consulta do formulário
@@ -312,6 +312,8 @@ def os_index(request):
             sql += f" AND dt_execucao BETWEEN '{dt_execucao1}' AND '{dt_execucao2}'"
         if dt_alteracao1 and dt_alteracao2:
             sql += f" AND dt_alteracao BETWEEN '{dt_alteracao1}' AND '{dt_alteracao2}'"
+        if pessoa:
+            sql += f" AND cadastrado_por LIKE '%{pessoa}%'"
         # sql += " ORDER BY dt_alteracao, dt_solicitacao"
         # Executar a consulta SQL personalizada
         with connection.cursor() as cursor:
@@ -544,7 +546,7 @@ def add_os(request):
     return render(request, 'os_ti/adicionar_os.html', context)
 
 @login_required
-@group_required('os_acesso')
+# @group_required('os_acesso')
 def detalhes_os(request, id):
     pessoa = Pessoa.objects.get(user=request.user)
     os = OrdemDeServico.objects.get(id=id)

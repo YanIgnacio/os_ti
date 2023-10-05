@@ -26,9 +26,16 @@
                             <div class="col px-0 d-flex">
                               <h4 class="pt-4">Detalhes da OS</h4>                              
                               <div class="dropdown">
-                                <button class="mt-3 py-1 ms-3 btn dropdown-toggle {% if os.prioridade == '0'%} btn-success {% elif os.prioridade == '1' %} btn-warning {% elif os.prioridade == '2' %} btn-danger {% endif %}" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                  {{os.get_prioridade_display}}
-                                </button>
+                                {% if request.user.is_staff %}
+                                  <button class="mt-3 py-1 ms-3 btn dropdown-toggle {% if os.prioridade == '0'%} btn-success {% elif os.prioridade == '1' %} btn-warning {% elif os.prioridade == '2' %} btn-danger {% endif %}" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                    {{os.get_prioridade_display}}
+                                  </button>
+                                {% else %}
+                                  <button class="mt-3 py-1 ms-3 btn dropdown-toggle {% if os.prioridade == '0'%} btn-success {% elif os.prioridade == '1' %} btn-warning {% elif os.prioridade == '2' %} btn-danger {% endif %}" type="button" id="dropdownMenuButton1" aria-expanded="false">
+                                    {{os.get_prioridade_display}}
+                                  </button>
+                                {% endif %}
+
                                 <ul class="dropdown-menu" style="padding: 3px;" aria-labelledby="dropdownMenuButton1">
                                   {% for prioridade in PRIORIDADES %}
                                   {% if not os.prioridade == prioridade.0 %}
@@ -42,20 +49,29 @@
                                 </ul>
                               </div>
                             </div>
-                            <div class="col d-flex">                              
-                              {% if os.atendente %}
-                              <span class="ms-auto mt-3  mb-auto btn btn-secondary py-1">
-                              {{os.atendente}}
-                              </span>
-                              {% else %}
-                              <a href="{% url 'os_ti:atender_os' os.id %}" class="ms-auto mt-3 mb-auto btn btn-secondary py-1">
-                                Atender chamado
-                              </a>
+                            <div class="col d-flex">
+                              {% if request.user.is_staff %}                              
+                                {% if os.atendente %}
+                                <span class="ms-auto mt-3  mb-auto btn btn-secondary py-1">
+                                {{os.atendente}}
+                                </span>
+                                {% else %}
+                                <a href="{% url 'os_ti:atender_os' os.id %}" class="ms-auto mt-3 mb-auto btn btn-secondary py-1">
+                                  Atender chamado
+                                </a>
+                                {% endif %}
                               {% endif %}
+
                               <div class="dropdown">
-                                <button class="ms-2 mt-3 py-1 px-4 text-capitalize btn dropdown-toggle {% if os.status == '0'%} btn-info text-white {% elif os.status == '1' %} btn-warning {% elif os.status == '2' %} btn-danger{% elif os.status == 'f' %} btn-dark {% endif %} px-2 py-0" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                  {{os.get_status_display}}
-                                </button>
+                                {% if request.user.is_staff %}
+                                  <button class="ms-2 mt-3 py-1 px-4 text-capitalize btn dropdown-toggle {% if os.status == '0'%} btn-info text-white {% elif os.status == '1' %} btn-warning {% elif os.status == '2' %} btn-danger{% elif os.status == 'f' %} btn-dark {% endif %} px-2 py-0" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                    {{os.get_status_display}}
+                                  </button>
+                                {% else %}
+                                  <button class="ms-2 mt-3 py-1 px-4 text-capitalize btn dropdown-toggle {% if os.status == '0'%} btn-info text-white {% elif os.status == '1' %} btn-warning {% elif os.status == '2' %} btn-danger{% elif os.status == 'f' %} btn-dark {% endif %} px-2 py-0" type="button" id="dropdownMenuButton1"  aria-expanded="false">
+                                    {{os.get_status_display}}
+                                  </button>
+                                {% endif %}
                                 <ul class="dropdown-menu" style="padding: 3px;" aria-labelledby="dropdownMenuButton1">
                                   {% for status in STATUS %}
                                   {% if not os.status == status.0 %}
@@ -132,20 +148,22 @@
                               <div class="border py-4 px-4">
                                 <p class="d-flex"><b class="me-auto">Nome:</b>{{os.nome_do_contribuinte}}</p>
                                 <p class="d-flex"><b class="me-auto">Telefone:</b>{{os.telefone_do_contribuinte}}</p>                                
-                              </div>    
-                              <div class="border  py-4 px-4 mt-3">
-                                <p class="d-flex me-2"><b class="me-auto">Atribuir</b></p>                                
-                                <a class="btn btn-primary" href="{% url 'os_ti:pontos_os' os.id %}">Qnt. Pontos e dt. execução</a>                              
-                                {% if os_ext.equipe %}                                
-                                <a href="{% url 'os_ti:atribuir equipe' os.id %}" tabindex="0" class="popoverbutton btn btn-md btn-primary" role="button" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-trigger="hover focus" title="Equipe" data-bs-content="{% for e in os_ext.equipe.all %}{{e}}{% if not forloop.last %}{% if forloop.revcounter == 1 %} | {% else %} | {% endif %}{% endif %} {% endfor %}">Equipe</a>                                
+                              </div>
+                              {% if request.user.is_staff %}    
+                                <div class="border  py-4 px-4 mt-3">
+                                  <p class="d-flex me-2"><b class="me-auto">Atribuir</b></p>                                
+                                  <a class="btn btn-primary" href="{% url 'os_ti:pontos_os' os.id %}">Qnt. Pontos e dt. execução</a>                              
+                                  {% if os_ext.equipe %}                                
+                                  <a href="{% url 'os_ti:atribuir equipe' os.id %}" tabindex="0" class="popoverbutton btn btn-md btn-primary" role="button" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-trigger="hover focus" title="Equipe" data-bs-content="{% for e in os_ext.equipe.all %}{{e}}{% if not forloop.last %}{% if forloop.revcounter == 1 %} | {% else %} | {% endif %}{% endif %} {% endfor %}">Equipe</a>                                
 
-                                {% else %}
-                                <a class="btn btn-primary" href="{% url 'os_ti:atribuir equipe' os.id %}">Equipe</a>
-                                {% endif %}
-                                
-                                {% comment %} <a class="btn btn-primary mt-2 {% if not os.status == 'f' %}disabled{% endif %}" href="{% url 'almoxarifado:alm_remover_material_do_estoque' os.id %}">Equipamentos utilizados</a> {% endcomment %}
+                                  {% else %}
+                                  <a class="btn btn-primary" href="{% url 'os_ti:atribuir equipe' os.id %}">Equipe</a>
+                                  {% endif %}
+                                  
+                                  {% comment %} <a class="btn btn-primary mt-2 {% if not os.status == 'f' %}disabled{% endif %}" href="{% url 'almoxarifado:alm_remover_material_do_estoque' os.id %}">Equipamentos utilizados</a> {% endcomment %}
 
-                              </div>                              
+                                </div>
+                              {% endif %}
                             </div>
                           </div>                         
                         </div>

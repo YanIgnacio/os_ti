@@ -10,6 +10,19 @@ from django.utils import timezone
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+class Secretaria(models.Model):
+    nome = models.CharField(max_length=100, verbose_name='Nome')
+    cep = models.CharField(max_length=9, verbose_name='CEP', null=True)
+    bairro=models.CharField(max_length=64, verbose_name='Bairro', null=True)
+    endereco=models.CharField(max_length=128, verbose_name='Endereco', null=True)
+    numero=models.CharField(max_length=8, verbose_name='Número', null=True)
+    complemento=models.CharField(max_length=128, verbose_name='Complemento', blank=True, null=True)
+
+class Setor(models.Model):
+    nome = models.CharField(max_length=100, verbose_name='Nome')
+    secretaria = models.ForeignKey(Secretaria, on_delete=models.CASCADE)
+    
+
 class Pessoa(models.Model):
     def __str__(self):
         return '%s - Email: %s' % (self.nome, self.email)
@@ -17,16 +30,16 @@ class Pessoa(models.Model):
     user=models.OneToOneField(User, on_delete=models.CASCADE)
     nome=models.CharField(max_length=64, verbose_name='Nome')
     email=models.EmailField()
-    cpf=models.CharField(max_length=14, verbose_name='CPF', unique=True, null=True)
+    matricula=models.CharField(max_length=7, verbose_name='Matricula', unique=True, null=True)
     telefone=models.CharField(max_length=15, verbose_name='Telefone', null=True)
     dt_nascimento=models.DateField(verbose_name='Data de nascimento', null=True)
-    bairro=models.CharField(max_length=64, verbose_name='Bairro', null=True)
-    endereco=models.CharField(max_length=128, verbose_name='Endereco', null=True)
-    numero=models.CharField(max_length=8, verbose_name='Número', null=True)
-    complemento=models.CharField(max_length=128, verbose_name='Complemento', blank=True, null=True)
-    cep = models.CharField(max_length=9, verbose_name='CEP', null=True)
+    secretaria=models.CharField(max_length=100, verbose_name='Secretaria', default='')
+    # bairro=models.CharField(max_length=64, verbose_name='Bairro', null=True)
+    # endereco=models.CharField(max_length=128, verbose_name='Endereco', null=True)
+    # numero=models.CharField(max_length=8, verbose_name='Número', null=True)
+    # complemento=models.CharField(max_length=128, verbose_name='Complemento', blank=True, null=True)
+    # cep = models.CharField(max_length=9, verbose_name='CEP', null=True)
     dt_inclusao=models.DateField(auto_now_add=True, verbose_name='Data de inclusão')
-    possui_cnpj=models.BooleanField(default=False, verbose_name='Você possui empresa?')
 
 class Tipo_Material(models.Model):
     nome=models.CharField('Tipo de Material', max_length=120)
@@ -137,6 +150,8 @@ class OrdemDeServico(models.Model):
 
     nome_do_contribuinte = models.CharField(max_length=200, verbose_name='Nome do contribuinte', blank=True)
     telefone_do_contribuinte = models.CharField(max_length=12, verbose_name='Telefone do contribuinte', blank=True)
+    secretaria = models.CharField(max_length=100, verbose_name='Secretaria', default='')
+    setor = models.CharField(max_length=100, verbose_name='Setor', default='')
 
     cadastrado_por = models.ForeignKey(Pessoa, on_delete=models.CASCADE, null=True)   
 

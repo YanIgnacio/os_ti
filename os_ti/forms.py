@@ -11,7 +11,7 @@ class OS_Form(ModelForm):
         widgets = {
             'tipo': forms.Select(attrs={'readonly': True}),
         }
-        exclude = ['numero', 'dt_inclusao', 'dt_alteracao','dt_execucao', 'observacao_pontos','atendente', 'dt_conclusao', 'prioridade', 'status', 'contribuinte', 'pontos_atendidos', 'cadastrado_por']
+        exclude = ['numero', 'dt_inclusao', 'dt_alteracao','dt_execucao', 'observacao_pontos','atendente', 'dt_conclusao', 'prioridade', 'status', 'contribuinte', 'pontos_atendidos', 'cadastrado_por', 'message_status', 'finalizado_por']
 
 
 class OS_Form_Ponto(ModelForm):    
@@ -89,7 +89,7 @@ class CadastroForm(ModelForm):
             'cep':forms.TextInput(attrs={'onkeydown': 'icep(this)','onblur':'getCEP(this)'}),
             'telefone':forms.TextInput(attrs={'onkeydown':'mascara(this, itel)'}),
         }
-        fields=['cpf','nome', 'email', 'telefone', 'dt_nascimento', 'cep','bairro', 'endereco', 'numero', 'complemento', 'possui_cnpj']
+        fields=['matricula', 'secretaria', 'nome', 'email', 'telefone', 'dt_nascimento']
         exclude = ['user']
 
     # def clean_cpf(self):

@@ -9,5 +9,7 @@ admin.site.register(Tipo_OS)
 admin.site.register(OS_ext)
 admin.site.register(OS_Linha_Tempo)
 admin.site.register(Pessoa)
+admin.site.register(Secretaria)
+admin.site.register(Setor)
 
 # Register your models here.
