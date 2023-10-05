@@ -27,7 +27,7 @@ class Secretaria(models.Model):
 class Setor(models.Model):
     nome = models.CharField(max_length=100, verbose_name='Nome')
     secretaria = models.ForeignKey(Secretaria, on_delete=models.CASCADE)
-    endereco = models.CharField(max_length=128, verbose_name='Endereco', null=True)
+    endereco = models.ForeignKey(Endereco, on_delete=models.CASCADE, default=False)
     
     def __str__(self):
         return self.nome

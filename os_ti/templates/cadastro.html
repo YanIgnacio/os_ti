@@ -1,10 +1,11 @@
-{% extends 'os_template.html' %}
+{% extends 'os_template_login.html' %}
 {% block subtitulo %}
 - Login
 {% endblock %}
 {% block main %}
-    <div id="login-box">
-        <image src="/static/img/prefeitura.png" id="img-login">
+<link rel="stylesheet" href="/static/css/style.css">
+    <div id="cadastro-box">
+        <!-- <image src="/static/img/prefeitura.png" id="img-login"> -->
             <h1 class="title-login">CADASTRO</h1>
             <hr id="hr-login">
             <form method="post">
@@ -19,13 +20,13 @@
                 {% if not is_user %}
                 <div class="mb-3">
                     <label class="mb-2 {% if error_senha.0 %}text-danger{% endif %}" for="senha">
-                        Senha:
+                        <strong> Senha:</strong>
                     </label>
                     <input required class="form-control" type="password" name="password" id="senha">
                 </div>
                 <div class="mb-3">
                     <label class="mb-2 {% if error_senha.0 %}text-danger{% endif %}" for="senha2">
-                        Repita a senha:
+                        <strong>Repita a senha:</strong>
                     </label>
                     <input required class="form-control" type="password" name="password2" id="senha2">
                 </div>

@@ -68,3 +68,81 @@ form {
 #button-submit-login:hover {
     background-color: #0056b3;
 }
+
+#cadastro-box {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    /* background-color: #f8f8f88c; */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+
+.title-login {
+    text-align: center;
+    color: #333;
+    font-size: 24px;
+}
+
+#hr-login {
+    border: 1px solid #ccc;
+    margin: 15px 0;
+}
+
+#input-container-login {
+    margin-bottom: 20px;
+}
+
+#mensagem_sucesso {
+    color: #4caf50;
+    font-weight: bold;
+    text-align: center;
+}
+
+#senha,
+#senha2 {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+#button-submit-login {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#rodape {
+    text-align: center;
+    font-size: 14px;
+    margin-top: 20px;
+    color: #888;
+}
+
+
+#id_email{
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+#id_dt_nascimento {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
